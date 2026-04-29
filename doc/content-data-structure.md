@@ -14,7 +14,7 @@
 | `updatedAt` | ISO 8601 Date | No | 更新日。未指定の場合は `publishedAt` と同値とみなす。 |
 | `tags` | string[] | No | コンテンツを分類するタグ。一覧フィルタや関連コンテンツ表示に使用。 |
 | `draft` | boolean | No | `true` の場合、ビルド時に公開対象から除外する。デフォルトは `false`。 |
-| `coverImage` | string | No | OGP画像やカード表示用の画像パス。未指定の場合はデフォルト画像を使用。 |
+| `coverImage` | string | No | カード一覧（`SummaryCard`）表示用の画像パス。**OGP画像はビルド時に自動生成されるため、`coverImage` はOGPには使用されない。** |
 
 > **メタデータの表示方針**: すべてのメタデータフィールドは「一覧表示用」「詳細表示用」に分けず、共通の概要パネルに表示する。詳細ページの上部にも概要パネルを配置し、メタデータを重複して表示する。
 
@@ -37,7 +37,7 @@
 |---|---|---|---|
 | `eventName` | string | Yes | イベント名。 |
 | `eventDate` | ISO 8601 Date | Yes | イベントの開催日。 |
-| `location` | string | No | 開催場所または開催形式。`online` or `offline` |
+| `location` | enum | No | 開催形式。`'online'` または `'offline'` |
 
 - **配置ディレクトリ**: `src/content/events/`
 - **ファイル形式**: `.mdx`
