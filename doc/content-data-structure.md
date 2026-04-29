@@ -37,7 +37,7 @@
 |---|---|---|---|
 | `eventName` | string | Yes | イベント名。 |
 | `eventDate` | ISO 8601 Date | Yes | イベントの開催日。 |
-| `location` | string | No | 開催場所または開催形式。`online` or `tokyo` |
+| `location` | string | No | 開催場所または開催形式。`online` or `offline` |
 
 - **配置ディレクトリ**: `src/content/events/`
 - **ファイル形式**: `.mdx`
@@ -69,6 +69,5 @@
 ## バリデーションルール
 
 1. **必須フィールド欠如**: 必須フィールドが欠落している場合、ビルド時に警告またはエラーを出力する。
-2. **スラッグ重複**: `articles/`, `slides/`, `stories/`, `events/` 内でファイル名（スラッグ）が重複する場合、ビルド時にエラーを出力する。
-3. **無効な日付形式**: `publishedAt`, `updatedAt`, `eventDate` が ISO 8601 Date でない場合、ビルド時にエラーを出力する。
-4. **不正なタグ**: `tags` に空文字列や重複値が含まれる場合、ビルド時に警告を出力し、空文字列を除外・重複を除去して処理する。
+2. **無効な日付形式**: `publishedAt`, `updatedAt`, `eventDate` が ISO 8601 Date でない場合、ビルド時にエラーを出力する。
+3. **不正なタグ**: `tags` に空文字列や重複値が含まれる場合、ビルド時に警告を出力し、空文字列を除外・重複を除去して処理する。
