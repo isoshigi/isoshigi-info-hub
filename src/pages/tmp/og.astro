@@ -1,0 +1,66 @@
+---
+import OGImageCard from '../../components/OGImageCard.astro';
+import '../../styles/global.css';
+import { getCollection } from 'astro:content';
+
+const articles = await getCollection('articles', ({ data }) => !data.draft);
+---
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>OG Image Generation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      padding: 40px;
+      background: #ccc;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+    .og-card-wrapper {
+      flex-shrink: 0;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      width: 1200px;
+      height: 630px;
+    }
+  </style>
+</head>
+<body>
+  <div id="og-home" class="og-card-wrapper">
+    <OGImageCard
+      title="いそしぎ忘備録"
+      description="検証結果や試行記録を「物語として完成させ」、小さな成果として蓄積していくアウトプット共有サイト。"
+      publishedAt={new Date('2026-01-01')}
+      tags={[]}
+    />
+  </div>
+
+  <div id="og-pages" class="og-card-wrapper">
+    <OGImageCard
+      title="すべての記録"
+      description="技術記事・イベント参加記録など、すべてのコンテンツを時系列で一覧表示しています。"
+      publishedAt={new Date('2026-01-01')}
+      tags={[]}
+    />
+  </div>
+
+  {articles.map((entry) => (
+    <div id={`og-article-${entry.id}`} class="og-card-wrapper">
+      <OGImageCard
+        type="article"
+        title={entry.data.title}
+        description={entry.data.description}
+        publishedAt={entry.data.publishedAt}
+        updatedAt={entry.data.updatedAt}
+        tags={entry.data.tags}
+      />
+    </div>
+  ))}
+</body>
+</html>

@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SummaryCard from '../components/SummaryCard.astro';
+import { getCollection } from 'astro:content';
+
+const articles = await getCollection('articles', ({ data }) => !data.draft);
+const events = await getCollection('events', ({ data }) => !data.draft);
+
+const latestItems = [
+  ...articles.map((entry) => ({ entry, type: 'article' as const, href: `/articles/${entry.id}` })),
+  ...events.map((entry) => ({ entry, type: 'event' as const, href: undefined })),
+]
+  .sort((a, b) => b.entry.data.publishedAt.getTime() - a.entry.data.publishedAt.getTime())
+  .slice(0, 5);
+---
+
+<BaseLayout
+  title="いそしぎ忘備録"
+  description="検証結果や試行記録を「物語として完成させ」、小さな成果として蓄積していくアウトプット共有サイト。"
+  ogImage="/img/og.png"
+>
+  <div class="space-y-8">
+    <section>
+      <h1 class="text-2xl font-bold text-text mb-3">いそしぎ忘備録</h1>
+      <p class="text-text-muted leading-relaxed">
+        検証結果や試行記録を「物語として完成させ」、小さな成果として蓄積していくアウトプット共有サイトです。
+        完璧を待たず、気軽に出せる場所を目指しています。
+      </p>
+    </section>
+
+    <section>
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-bold text-text">最新の記録</h2>
+        <a href="/pages" class="text-sm font-medium">すべて見る →</a>
+      </div>
+      {latestItems.length === 0 ? (
+        <p class="text-text-muted text-sm">コンテンツがまだありません。準備が整い次第、ここに表示されます。</p>
+      ) : (
+        <ul class="flex flex-col gap-4 list-none p-0 m-0">
+          {latestItems.map(({ entry, type, href }) => (
+            <li>
+              <SummaryCard
+                type={type}
+                title={entry.data.title}
+                description={entry.data.description}
+                publishedAt={entry.data.publishedAt}
+                updatedAt={entry.data.updatedAt}
+                tags={entry.data.tags}
+                coverImage={entry.data.coverImage}
+                href={href}
+              />
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  </div>
+</BaseLayout>
