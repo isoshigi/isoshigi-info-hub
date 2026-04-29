@@ -32,9 +32,6 @@ body {
   line-height: 1.75;
 }
 
-.prose {
-  max-width: 65ch;
-}
 .prose > * + * {
   margin-top: 1.5em;
 }
