@@ -1,0 +1,65 @@
+---
+export interface Props {
+  type: 'article' | 'event' | 'slide' | 'story';
+  title: string;
+  description: string;
+  publishedAt: Date;
+  updatedAt?: Date;
+  tags?: string[];
+  coverImage?: string;
+  href?: string;
+}
+
+const { type, title, description, publishedAt, updatedAt, tags, coverImage, href } = Astro.props;
+
+const typeLabels: Record<string, string> = {
+  article: 'Article',
+  event: 'Event',
+  slide: 'Slide',
+  story: 'Story',
+};
+
+const formatDate = (d: Date) => {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+};
+
+const Wrapper = href ? 'a' : 'div';
+const wrapperClass = href
+  ? 'block bg-surface border-l-8 border-r-2 border-l-border border-r-border hover:border-l-accent hover:border-r-accent no-underline'
+  : 'block bg-surface border-l-8 border-r-2 border-l-border border-r-border';
+---
+
+<Wrapper class={wrapperClass} href={href}>
+  {coverImage && (
+    <div class="overflow-hidden border-b border-border">
+      <img src={coverImage} alt="" class="w-full h-32 object-cover" loading="lazy" />
+    </div>
+  )}
+  <div class="p-4 flex flex-col gap-2 min-w-0">
+    <div class="flex items-center gap-2 flex-wrap">
+      <span class="inline-block px-2 py-0.5 text-xs font-semibold bg-accent-light text-accent">
+        {typeLabels[type]}
+      </span>
+      <time class="text-xs text-text-muted" datetime={publishedAt.toISOString()}>
+        {formatDate(publishedAt)}
+        {updatedAt && updatedAt.getTime() !== publishedAt.getTime() && (
+          <span>（更新: {formatDate(updatedAt)}）</span>
+        )}
+      </time>
+    </div>
+    <h3 class="text-base font-bold text-text truncate">{title}</h3>
+    <p class="text-sm text-text-muted line-clamp-2">{description}</p>
+    {tags && tags.length > 0 && (
+      <div class="flex flex-wrap gap-1.5 mt-1">
+        {tags.map((tag) => (
+          <span class="inline-block px-2 py-0.5 bg-accent-light text-accent text-xs font-medium border border-accent-light">
+            {tag}
+          </span>
+        ))}
+      </div>
+    )}
+  </div>
+</Wrapper>

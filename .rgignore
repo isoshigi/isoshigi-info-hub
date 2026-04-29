@@ -1,2 +1,5 @@
+# build output
+!dist/
+
 # tmp dir
 !tmp/

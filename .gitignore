@@ -25,3 +25,4 @@ pnpm-debug.log*
 
 # tmp dir
 tmp/
+!src/pages/tmp
