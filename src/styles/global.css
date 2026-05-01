@@ -25,6 +25,18 @@
   }
 }
 
+@layer components {
+  .card {
+    @apply block bg-surface border-l-8 border-r-2 p-4 border-l-surface border-r-surface;
+  }
+  .interactive-card {
+    @apply border-l-border border-r-border hover:border-l-accent hover:border-r-accent no-underline transition-colors;
+  }
+  .badge {
+    @apply inline-block px-2 py-0.5 text-xs font-semibold bg-accent-light text-accent;
+  }
+}
+
 body {
   font-family: var(--font-sans);
   color: var(--color-text);
