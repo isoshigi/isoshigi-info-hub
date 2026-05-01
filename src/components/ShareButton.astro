@@ -3,24 +3,20 @@ export interface Props {
   url: string;
   title: string;
   description?: string;
-  hashtag?: string;
-  mention?: string;
 }
 
-const { url, title, description = '', hashtag = '', mention = '' } = Astro.props;
+const { url, title, description = '' } = Astro.props;
+
+const hashtag = 'いそしぎ忘備録';
+const mention = 'isoshigicchi';
 
 let text = title;
 if (description) text += '\n' + description;
-if (mention) text += '\n@' + mention;
+text += '\n@' + mention;
 
-const shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}${hashtag ? '&hashtags=' + encodeURIComponent(hashtag) : ''}`;
+const shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}&hashtags=${encodeURIComponent(hashtag)}`;
 ---
 
-<a
-  href={shareUrl}
-  target="_blank"
-  rel="noopener noreferrer"
-  class="inline-flex items-center gap-1.5 text-sm"
->
+<a href={shareUrl} target="_blank" rel="noopener noreferrer">
   Xでシェア
 </a>

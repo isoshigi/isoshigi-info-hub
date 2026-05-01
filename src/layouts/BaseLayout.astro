@@ -58,24 +58,22 @@ const fullTitle = title === 'いそしぎ忘備録' ? title : `${title} | いそ
     </main>
 
     <aside class="w-full lg:w-64 shrink-0 space-y-4">
-      <section class="bg-surface p-4">
+      <div class="card">
         <h3 class="text-sm font-bold text-text mb-2">このページをシェア</h3>
         <ShareButton
           url={canonicalURL.toString()}
           title={title}
           description={description}
-          hashtag="いそしぎ忘備録"
-          mention="isoshigicchi"
         />
-      </section>
-      <section class="bg-surface p-4">
+      </div>
+      <div class="card">
         <h3 class="text-sm font-bold text-text mb-2">プロフィール</h3>
         <p class="text-sm text-text-muted mb-3">技術的なアウトプットを小さく継続していくことを目指しています。</p>
         <div class="flex flex-col gap-1.5">
           <a href="https://x.com/isoshigicchi" target="_blank" rel="noopener noreferrer" class="text-sm">X @isoshigicchi</a>
           <a href="https://github.com/isoshigi" target="_blank" rel="noopener noreferrer" class="text-sm">GitHub isoshigi</a>
         </div>
-      </section>
+      </div>
     </aside>
   </div>
 
