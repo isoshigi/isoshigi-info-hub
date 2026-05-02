@@ -60,8 +60,8 @@ Follow the existing convention (executable truth in `src/styles/global.css`):
 
 - **Target**: Cloudflare (R2 + CDN / Pages).
 - **Site URL**: `https://isoshigi.dev`
-- **Command**: `wrangler pages deploy dist`
-- v0.1 uses manual deploy; no CI/CD automation is configured.
+- **Command**: `npx wrangler deploy`
+- CI/CD is configured via GitHub Actions (see `.github/workflows/deploy.yml`).
 
 ## Analytics
 
