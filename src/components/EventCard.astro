@@ -1,0 +1,29 @@
+---
+export interface Props {
+  eventName: string;
+  date: Date;
+  location?: 'online' | 'offline';
+}
+
+const { eventName, date, location } = Astro.props;
+
+const formatDate = (d: Date) => {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+};
+---
+
+<div class="card">
+  <div class="flex items-center gap-2 flex-wrap mb-2">
+    <span class="badge">Event</span>
+    {location && (
+      <span class="badge">{location}</span>
+    )}
+  </div>
+  <h3 class="text-base font-bold text-text mb-1">{eventName}</h3>
+  <time class="text-xs text-text-muted" datetime={date.toISOString()}>
+    {formatDate(date)}
+  </time>
+</div>
