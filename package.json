@@ -10,7 +10,7 @@
     "build": "astro build && node scripts/generate-og-images.mjs",
     "preview": "astro preview",
     "astro": "astro",
-    "deploy": "npm run build && npx wrangler deploy"
+    "deploy": "npx wrangler deploy"
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.4",
