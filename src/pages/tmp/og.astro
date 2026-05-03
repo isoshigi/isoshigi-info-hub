@@ -50,10 +50,10 @@ const articles = await getCollection('articles', ({ data }) => !data.draft);
     />
   </div>
 
-  <div id="og-events" class="og-card-wrapper">
+  <div id="og-logs" class="og-card-wrapper">
     <OGImageCard
-      title="イベント参加記録"
-      description="参加したイベントの一覧です。"
+      title="ログ"
+      description="イベント参加記録など、軽量コンテンツの一覧です。"
       publishedAt={new Date('2026-01-01')}
       tags={[]}
     />

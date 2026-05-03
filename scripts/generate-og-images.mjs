@@ -67,8 +67,8 @@ async function generate() {
       outputPath = path.join(distDir, 'img/og.png');
     } else if (id === 'og-pages') {
       outputPath = path.join(distDir, 'img/pages/og.png');
-    } else if (id === 'og-events') {
-      outputPath = path.join(distDir, 'img/events/og.png');
+    } else if (id === 'og-logs') {
+      outputPath = path.join(distDir, 'img/logs/og.png');
     } else if (id.startsWith('og-article-')) {
       const slug = id.replace('og-article-', '');
       outputPath = path.join(distDir, `img/articles/${slug}/og.png`);
