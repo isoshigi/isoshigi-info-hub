@@ -17,17 +17,14 @@ const commonSchema = z.object({
 
 const articles = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/articles' }),
-  schema: commonSchema.extend({
-    series: z.string().optional(),
-    seriesOrder: z.number().optional(),
-  }),
+  schema: commonSchema,
 });
 
 const events = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/events' }),
-  schema: commonSchema.extend({
+  schema: z.object({
     eventName: z.string(),
-    eventDate: z.coerce.date(),
+    dates: z.array(z.coerce.date()).min(1),
     location: z.enum(['online', 'offline']).optional(),
   }),
 });

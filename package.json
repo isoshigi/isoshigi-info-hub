@@ -9,12 +9,14 @@
     "dev": "astro dev",
     "build": "astro build && node scripts/generate-og-images.mjs",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "deploy": "npx wrangler deploy"
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.4",
     "@tailwindcss/vite": "^4.2.4",
     "astro": "^6.1.10",
+    "rehype-external-links": "^3.0.0",
     "tailwindcss": "^4.2.4"
   },
   "devDependencies": {
