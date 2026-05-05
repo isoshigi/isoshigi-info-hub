@@ -5,14 +5,17 @@ import { getCollection } from 'astro:content';
 
 const events = await getCollection('events');
 
-const eventCards = events.flatMap((entry) => {
-  const sortedDates = entry.data.dates.sort((a, b) => b.getTime() - a.getTime());
-  return sortedDates.map((date) => ({
-    eventName: entry.data.eventName,
-    date,
-    location: entry.data.location,
-  }));
-}).sort((a, b) => b.date.getTime() - a.date.getTime());
+const eventCards = events
+  .flatMap((entry) =>
+    [...entry.data.dates]
+      .sort((a, b) => b.getTime() - a.getTime())
+      .map((date) => ({
+        eventName: entry.data.eventName,
+        date,
+        location: entry.data.location,
+      })),
+  )
+  .sort((a, b) => b.date.getTime() - a.date.getTime());
 ---
 
 <BaseLayout
