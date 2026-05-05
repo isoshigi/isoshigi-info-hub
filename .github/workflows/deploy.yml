@@ -50,7 +50,7 @@ jobs:
 
           if [[ "$SOURCE_BRANCH" == test/v* ]] || [[ "$SOURCE_BRANCH" == feat/v* ]]; then
             echo "Source branch '$SOURCE_BRANCH' matches pattern. Bumping version..."
-            npm version patch
+            npm version minor
             git push --follow-tags
           else
             echo "Source branch '$SOURCE_BRANCH' does not match test/v* or feat/v*. Skipping version bump."
