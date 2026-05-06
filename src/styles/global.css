@@ -10,7 +10,7 @@
   --color-text-muted: var(--color-slate-700);
   --color-link-hover: var(--color-sky-500);
   --color-border: var(--color-slate-300);
-  --color-accent: var(--color-sky-500);
+  --color-accent: var(--color-sky-600);
   --color-accent-light: var(--color-sky-50);
 }
 
@@ -21,6 +21,7 @@
     --color-text: var(--color-slate-100);
     --color-text-muted: var(--color-slate-300);
     --color-border: var(--color-slate-700);
+    --color-accent: var(--color-sky-400);
     --color-accent-light: var(--color-sky-950);
   }
 }
