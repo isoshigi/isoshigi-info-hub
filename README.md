@@ -103,25 +103,19 @@ cp templates/event.mdx src/content/events/my-event.mdx
 
 ### イベント参加記録の追加
 
-`src/content/events/` に MDX を配置する。イベントは個別ページを持たず、`/pages` 共通一覧に表示される。
+`src/content/events/` に MDX を配置する。イベントは個別ページを持たず、`/logs` 一覧に表示される。本文は持たず、フロントマターのみで構成する。
 
 ```mdx
 ---
-title: "イベント参加記録タイトル"
-description: "概要"
-publishedAt: 2026-04-20
-eventDate: 2026-04-20
 eventName: "イベント名"
+dates:
+  - 2026-04-20
 location: "offline"
-draft: false
 ---
-
-## 得られた知見
-
-本文を書く。
 ```
 
-- `location` は `"online"` または `"offline"` を指定する。
+- `location` は `"online"` または `"offline"` を指定する（省略可）。
+- 同じイベントに複数回参加した場合は `dates` 配列に追加する。
 
 ## OGP 画像の自動生成
 

@@ -93,7 +93,7 @@ OGP images are automatically generated at build time via Playwright.
 - **`scripts/generate-og-images.mjs`**: Starts a local static server, opens `/tmp/og/` in a headless Chromium viewport (1200×630), screenshots each `.og-card-wrapper`, and saves them to:
   - `/img/og.png` (home page)
   - `/img/pages/og.png` (`/pages` listing)
-  - `/img/events/og.png` (`/events` listing)
+  - `/img/logs/og.png` (`/logs` listing)
   - `/img/articles/{slug}/og.png` (each article)
 - After generation the `dist/tmp/` directory is deleted so it is never published.
 - `coverImage` is **not** used for OG images; it is only for the card thumbnail shown in `SummaryCard` lists.
