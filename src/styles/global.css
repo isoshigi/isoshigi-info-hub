@@ -11,7 +11,7 @@
   --color-link-hover: var(--color-sky-500);
   --color-border: var(--color-slate-300);
   --color-accent: var(--color-sky-600);
-  --color-accent-light: var(--color-sky-50);
+  --color-accent-light: var(--color-sky-100);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,7 +22,7 @@
     --color-text-muted: var(--color-slate-300);
     --color-border: var(--color-slate-700);
     --color-accent: var(--color-sky-400);
-    --color-accent-light: var(--color-sky-950);
+    --color-accent-light: var(--color-sky-900);
   }
 }
 
