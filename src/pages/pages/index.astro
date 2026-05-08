@@ -4,15 +4,19 @@ import SummaryCard from '../../components/SummaryCard.astro';
 import { getCollection } from 'astro:content';
 
 const articles = await getCollection('articles', ({ data }) => !data.draft);
+const slides = await getCollection('slides', ({ data }) => !data.draft);
+const stories = await getCollection('stories', ({ data }) => !data.draft);
 
-const allItems = articles
-  .map((entry) => ({ entry, type: 'article' as const, href: `/articles/${entry.id}` }))
-  .sort((a, b) => b.entry.data.publishedAt.getTime() - a.entry.data.publishedAt.getTime());
+const allItems = [
+  ...articles.map((entry) => ({ entry, type: 'article' as const, href: `/articles/${entry.id}` })),
+  ...slides.map((entry) => ({ entry, type: 'slide' as const, href: `/slides/${entry.id}` })),
+  ...stories.map((entry) => ({ entry, type: 'story' as const, href: `/stories/${entry.id}` })),
+].sort((a, b) => b.entry.data.publishedAt.getTime() - a.entry.data.publishedAt.getTime());
 ---
 
 <BaseLayout
   title="すべての記録"
-  description="技術記事、イベント参加記録など、すべてのアウトプットを時系列で一覧表示しています。"
+  description="技術記事、スライド、ストーリーなど、すべてのアウトプットを時系列で一覧表示しています。"
   ogImage="/img/pages/og.png"
 >
   <div class="space-y-6">
@@ -25,10 +29,10 @@ const allItems = articles
       <p class="text-text-muted">コンテンツがまだありません。</p>
     ) : (
       <ul class="flex flex-col gap-4 list-none p-0 m-0">
-        {allItems.map(({ entry, href }) => (
+        {allItems.map(({ entry, type, href }) => (
           <li>
             <SummaryCard
-              type="article"
+              type={type}
               title={entry.data.title}
               description={entry.data.description}
               publishedAt={entry.data.publishedAt}

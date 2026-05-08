@@ -1,0 +1,25 @@
+---
+import '../../../styles/global.css';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const slides = await getCollection('slides', ({ data }) => !data.draft);
+  return slides.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+</head>
+<body style="margin:0; background:var(--color-bg);">
+  <Content />
+</body>
+</html>
