@@ -35,7 +35,7 @@ const { entry } = Astro.props;
       <p class="text-xs text-text-muted">Theme: {entry.data.theme}</p>
     )}
 
-    <div class="aspect-video w-full border border-border rounded-lg overflow-hidden">
+    <div class="aspect-video w-full border border-border overflow-hidden">
       <object data={`/pdf/slides/${entry.id}.pdf`} type="application/pdf" class="w-full h-full">
         <p class="text-text-muted text-sm p-4">
           PDFを表示できません。<a href={`/pdf/slides/${entry.id}.pdf`} class="text-accent underline">こちらからダウンロード</a>してください。

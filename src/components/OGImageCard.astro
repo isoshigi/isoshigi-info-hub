@@ -33,7 +33,7 @@ const formatDate = (d: Date) => {
     <div class="flex items-center gap-4 mb-8">
       {type && (
         <span
-          class="inline-block px-4 py-1 text-xl font-semibold bg-accent-light text-accent rounded-sm"
+          class="inline-block px-4 py-1 text-xl font-semibold bg-accent-light text-accent"
           style="border-radius: 4px;"
         >
           {typeLabels[type]}
@@ -66,10 +66,7 @@ const formatDate = (d: Date) => {
     {tags && tags.length > 0 && (
       <div class="flex flex-wrap gap-3">
         {tags.map((tag) => (
-          <span
-            class="inline-block px-4 py-1.5 bg-accent-light text-accent text-lg font-medium border border-accent-light"
-            style="border-radius: 4px;"
-          >
+          <span class="badge px-4 py-1.5 text-lg font-medium">
             {tag}
           </span>
         ))}
