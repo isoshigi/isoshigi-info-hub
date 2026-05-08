@@ -1,0 +1,86 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SummaryCard from '../../components/SummaryCard.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const stories = await getCollection('stories', ({ data }) => !data.draft);
+  return stories.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const allArticles = await getCollection('articles', ({ data }) => !data.draft);
+const allSlides = await getCollection('slides', ({ data }) => !data.draft);
+const allStories = await getCollection('stories', ({ data }) => !data.draft);
+const entryMap: Record<string, Record<string, any>> = {
+  articles: Object.fromEntries(allArticles.map((e) => [e.id, e])),
+  slides: Object.fromEntries(allSlides.map((e) => [e.id, e])),
+  stories: Object.fromEntries(allStories.map((e) => [e.id, e])),
+};
+
+type StoryFlowItem = { collection: 'articles' | 'slides' | 'stories'; slug: string };
+const resolvedFlow = entry.data.storyFlow
+  .map((item: StoryFlowItem) => {
+    const refEntry = entryMap[item.collection]?.[item.slug];
+    if (!refEntry) {
+      console.warn(`storyFlow: ${item.collection}/${item.slug} not found in story "${entry.id}"`);
+      return null;
+    }
+    return {
+      ...item,
+      entry: refEntry,
+      href: `/${item.collection}/${item.slug}`,
+    };
+  })
+  .filter(Boolean);
+---
+
+<BaseLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  ogImage={`/img/stories/${entry.id}/og.png`}
+  ogType="article"
+>
+  <article class="space-y-8">
+    <SummaryCard
+      type="story"
+      title={entry.data.title}
+      description={entry.data.description}
+      publishedAt={entry.data.publishedAt}
+      updatedAt={entry.data.updatedAt}
+      tags={entry.data.tags}
+      coverImage={entry.data.coverImage}
+    />
+
+    <section class="space-y-3">
+      <h2 class="text-lg font-bold text-text">ストーリーフロー</h2>
+      <div class="flex flex-col gap-4">
+        {resolvedFlow.map((item) => (
+          <SummaryCard
+            type={item.collection === 'stories' ? 'story' : item.collection === 'slides' ? 'slide' : 'article'}
+            title={item.entry.data.title}
+            description={item.entry.data.description}
+            publishedAt={item.entry.data.publishedAt}
+            updatedAt={item.entry.data.updatedAt}
+            tags={item.entry.data.tags}
+            coverImage={item.entry.data.coverImage}
+            href={item.href}
+          />
+        ))}
+      </div>
+    </section>
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    <footer class="pt-6 border-t border-border">
+      <a href="/pages" class="text-sm font-medium text-text-muted hover:text-link transition-colors">← すべての記録に戻る</a>
+    </footer>
+  </article>
+</BaseLayout>

@@ -1,4 +1,5 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
 
 const commonSchema = z.object({
@@ -29,4 +30,21 @@ const events = defineCollection({
   }),
 });
 
-export const collections = { articles, events };
+const slides = defineCollection({
+  loader: glob({ pattern: '**/*.mdx', base: './src/content/slides' }),
+  schema: commonSchema.extend({
+    theme: z.string().optional(),
+  }),
+});
+
+const stories = defineCollection({
+  loader: glob({ pattern: '**/*.mdx', base: './src/content/stories' }),
+  schema: commonSchema.extend({
+    storyFlow: z.array(z.object({
+      collection: z.enum(['articles', 'slides', 'stories']),
+      slug: z.string(),
+    })).min(1),
+  }),
+});
+
+export const collections = { articles, events, slides, stories };

@@ -28,6 +28,7 @@ async function startServer() {
         ext === '.png' ? 'image/png' :
         ext === '.jpg' || ext === '.jpeg' ? 'image/jpeg' :
         ext === '.svg' ? 'image/svg+xml' :
+        ext === '.pdf' ? 'application/pdf' :
         'application/octet-stream';
       res.writeHead(200, { 'Content-Type': contentType });
       res.end(data);
@@ -45,15 +46,12 @@ async function startServer() {
   });
 }
 
-async function generate() {
-  const server = await startServer();
-  const browser = await chromium.launch();
+async function generateOGImages(browser, port) {
   const page = await browser.newPage();
   await page.setViewportSize({ width: 1280, height: 800 });
+  await page.emulateMedia({ colorScheme: 'dark' });
 
   await page.goto(`http://localhost:${port}/tmp/og/`, { waitUntil: 'networkidle' });
-
-  // Wait for web fonts to load
   await page.evaluate(() => document.fonts.ready);
 
   const elements = await page.locator('.og-card-wrapper').all();
@@ -72,27 +70,79 @@ async function generate() {
     } else if (id.startsWith('og-article-')) {
       const slug = id.replace('og-article-', '');
       outputPath = path.join(distDir, `img/articles/${slug}/og.png`);
+    } else if (id.startsWith('og-slide-')) {
+      const slug = id.replace('og-slide-', '');
+      outputPath = path.join(distDir, `img/slides/${slug}/og.png`);
+    } else if (id.startsWith('og-story-')) {
+      const slug = id.replace('og-story-', '');
+      outputPath = path.join(distDir, `img/stories/${slug}/og.png`);
     } else {
       continue;
     }
 
     await fs.mkdir(path.dirname(outputPath), { recursive: true });
     await el.screenshot({ type: 'png', path: outputPath });
-    console.log(`Generated: ${outputPath}`);
+    console.log(`OG: ${outputPath}`);
   }
 
-  await browser.close();
-  server.closeAllConnections?.();
-  server.close(() => {
-    console.log('Server closed.');
-  });
+  await page.close();
+}
 
-  // Remove dist/tmp/ from the final output
+async function generateSlidePDFs(browser, port) {
+  const slidesDir = path.join(distDir, 'slides');
+  let slideSlugs = [];
+  try {
+    const entries = await fs.readdir(slidesDir, { withFileTypes: true });
+    slideSlugs = entries.filter((e) => e.isDirectory()).map((e) => e.name);
+  } catch {
+    return;
+  }
+
+  if (slideSlugs.length === 0) {
+    console.log('No slides found for PDF generation.');
+    return;
+  }
+
+  const pdfBaseDir = path.join(distDir, 'pdf', 'slides');
+  await fs.mkdir(pdfBaseDir, { recursive: true });
+
+  for (const slug of slideSlugs) {
+    const url = `http://localhost:${port}/tmp/slides/${slug}/`;
+    console.log(`PDF: generating for ${slug}...`);
+
+    const page = await browser.newPage();
+    await page.setViewportSize({ width: 1920, height: 1080 });
+    await page.emulateMedia({ colorScheme: 'dark' });
+    await page.goto(url, { waitUntil: 'networkidle' });
+
+    const outputPath = path.join(pdfBaseDir, `${slug}.pdf`);
+    await page.pdf({ path: outputPath, width: '1920px', height: '1080px', printBackground: true });
+    console.log(`PDF: ${outputPath}`);
+    await page.close();
+  }
+}
+
+async function main() {
+  const server = await startServer();
+
+  const browser = await chromium.launch();
+
+  try {
+    await generateOGImages(browser, port);
+    await generateSlidePDFs(browser, port);
+  } finally {
+    await browser.close();
+    server.closeAllConnections?.();
+    server.close(() => {
+      console.log('Server closed.');
+    });
+  }
+
   await fs.rm(path.join(distDir, 'tmp'), { recursive: true, force: true });
   console.log('Removed dist/tmp/');
 }
 
-generate().catch((err) => {
+main().catch((err) => {
   console.error(err);
   process.exit(1);
 });

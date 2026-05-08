@@ -33,6 +33,14 @@ Common-schema content with a body (MDX). These are "completed stories" extracted
   - Rendered at `/articles/{slug}` (`[slug].astro`).
   - Schema: `title`, `description` (max 200 chars), `publishedAt`, `updatedAt?`, `tags?`, `draft?` (default false), `coverImage?`.
 
+- **`slides`** → `src/content/slides/*.mdx`
+  - Rendered at `/slides/{slug}` (`[slug].astro`).
+  - Schema: Common schema + `theme?` (string).
+
+- **`stories`** → `src/content/stories/*.mdx`
+  - Rendered at `/stories/{slug}` (`[slug].astro`).
+  - Schema: Common schema + `storyFlow` (string array, min 1).
+
 ### 軽量コンテンツ（Lightweight Content）
 Standalone-schema content with **frontmatter only** (no body). These are raw records, logs, and lightweight outputs that do not require a full narrative. Listed on dedicated **`/logs`** pages, never mixed into `/pages` or the home page.
 
@@ -47,7 +55,7 @@ Standalone-schema content with **frontmatter only** (no body). These are raw rec
 ### Listing Pages
 | Page | URL | Content Types Shown |
 |------|-----|---------------------|
-| Standard Content | `/pages` | articles (and any future standard collections) |
+| Standard Content | `/pages` | articles, slides, stories |
 | Lightweight Content | `/logs` | events (and any future lightweight collections) |
 
 ### Schema Quirks
@@ -61,6 +69,12 @@ Use the templates rather than writing frontmatter from scratch:
 ```sh
 # New article
 cp templates/article.mdx src/content/articles/my-post.mdx
+
+# New slide
+cp templates/slide.mdx src/content/slides/my-slide.mdx
+
+# New story
+cp templates/story.mdx src/content/stories/my-story.mdx
 
 # New event record
 cp templates/event.mdx src/content/events/my-event.mdx
@@ -85,15 +99,18 @@ Follow the existing convention (executable truth in `src/styles/global.css`):
 
 Cloudflare Web Analytics script has been removed from `src/layouts/BaseLayout.astro`. Analytics is intended to be injected automatically at the Cloudflare edge level instead.
 
-## OGP Generation
+## OGP Generation & PDF Export
 
-OGP images are automatically generated at build time via Playwright.
+OGP images and slide PDFs are automatically generated at build time via a single Playwright session.
 
-- **`src/pages/tmp/og.astro`**: Renders invisible OG image cards for every public article plus the home, `/pages`, and `/events` pages.
-- **`scripts/generate-og-images.mjs`**: Starts a local static server, opens `/tmp/og/` in a headless Chromium viewport (1200×630), screenshots each `.og-card-wrapper`, and saves them to:
+- **`src/pages/tmp/og.astro`**: Renders invisible OG image cards for every public article, slide, and story plus the home, `/pages`, and `/logs` pages.
+- **`scripts/postbuild.mjs`**: Starts a local static server, opens `/tmp/og/` in a headless Chromium instance, screenshots each `.og-card-wrapper`, then generates PDFs for each slide page. Saves to:
   - `/img/og.png` (home page)
   - `/img/pages/og.png` (`/pages` listing)
-  - `/img/events/og.png` (`/events` listing)
+  - `/img/logs/og.png` (`/logs` listing)
   - `/img/articles/{slug}/og.png` (each article)
+  - `/img/slides/{slug}/og.png` (each slide)
+  - `/img/stories/{slug}/og.png` (each story)
+  - `/pdf/slides/{slug}.pdf` (each slide, A4, print media emulation)
 - After generation the `dist/tmp/` directory is deleted so it is never published.
 - `coverImage` is **not** used for OG images; it is only for the card thumbnail shown in `SummaryCard` lists.
