@@ -1,0 +1,64 @@
+@layer components {
+  .prose > * + * {
+    @apply mt-6;
+  }
+  .prose p {
+    line-height: 1.75;
+    @apply mb-6;
+  }
+  .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+    @apply font-bold leading-tight mt-8 mb-3 text-text;
+  }
+  .prose h1 { @apply text-3xl; }
+  .prose h2 { @apply text-2xl border-b border-border; padding-bottom: 0.3em; }
+  .prose h3 { @apply text-xl; }
+  .prose h4 { @apply text-lg; }
+  .prose h5 { @apply text-base; }
+  .prose h6 { @apply text-sm; }
+  .prose ul, .prose ol {
+    @apply mb-6; padding-left: 1.75em;
+  }
+  .prose ul { @apply list-disc; }
+  .prose ol { @apply list-decimal; }
+  .prose li { @apply mb-2; }
+  .prose li > ul, .prose li > ol { @apply mb-0 mt-2; }
+  .prose code:not(pre code) {
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 0.875em;
+    @apply bg-accent-light font-semibold;
+    padding: 0.2em 0.4em;
+  }
+  .prose pre {
+    @apply bg-surface border border-border p-4 overflow-x-auto mb-6 text-sm leading-normal;
+  }
+  .prose pre code {
+    @apply bg-none p-0 text-inherit font-normal;
+  }
+  .prose blockquote {
+    @apply border-l-4 border-l-accent pl-4 my-6 text-text-muted italic;
+  }
+  .prose hr {
+    @apply border-0 border-t border-border my-8;
+  }
+  .prose img {
+    @apply max-w-full h-auto;
+  }
+  .prose a {
+    @apply text-accent;
+    text-underline-offset: 2px;
+  }
+  .prose a:hover {
+    @apply text-link-hover;
+  }
+  .prose table {
+    @apply w-full border-collapse mb-6;
+  }
+  .prose th, .prose td {
+    @apply border border-border px-3 py-2 text-left;
+  }
+  .prose th {
+    @apply font-semibold bg-accent-light;
+  }
+  .prose strong { @apply font-bold; }
+  .prose em { @apply italic; }
+}

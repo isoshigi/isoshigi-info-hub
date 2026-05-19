@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SummaryCard from '../../components/SummaryCard.astro';
+import PageFooter from '../../components/PageFooter.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -79,8 +80,6 @@ const resolvedFlow = entry.data.storyFlow
       <Content />
     </div>
 
-    <footer class="pt-6 border-t border-border">
-      <a href="/pages" class="text-sm font-medium text-text-muted hover:text-link transition-colors">← すべての記録に戻る</a>
-    </footer>
+    <PageFooter />
   </article>
 </BaseLayout>

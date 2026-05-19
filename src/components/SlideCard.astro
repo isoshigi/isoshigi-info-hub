@@ -1,0 +1,62 @@
+---
+export interface Props {}
+
+const {} = Astro.props;
+---
+
+<section class="slide-card">
+  <header class="slide-header">
+    <span class="slide-site-name">いそしぎ忘備録</span>
+    <span class="slide-page-num"></span>
+  </header>
+  <div class="slide-body prose">
+    <slot />
+  </div>
+  <footer class="slide-footer">
+    <span class="slide-page-num"></span>
+    <span class="slide-site-name">いそしぎ忘備録</span>
+  </footer>
+</section>
+
+<style is:global>
+  @reference "/src/styles/global.css";
+
+  body {
+    counter-reset: slide-page;
+  }
+
+  .slide-card {
+    @apply bg-surface flex flex-col box-border overflow-hidden;
+    width: 1920px;
+    height: 1080px;
+    page-break-after: always;
+    counter-increment: slide-page;
+  }
+
+  .slide-card:last-child {
+    page-break-after: auto;
+  }
+
+  .slide-header,
+  .slide-footer {
+    @apply flex items-center justify-between text-text-muted shrink-0;
+    font-size: 24px;
+    line-height: 1;
+    padding: 12px 24px;
+  }
+
+  .slide-body {
+    @apply flex-1 overflow-hidden flex flex-col justify-center;
+    padding: 0 24px;
+    zoom: 3;
+  }
+
+  .slide-page-num::before {
+    content: counter(slide-page);
+    font-weight: 700;
+  }
+
+  .slide-site-name {
+    @apply text-text-muted;
+  }
+</style>
