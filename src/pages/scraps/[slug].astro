@@ -3,9 +3,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import SummaryCard from '../../components/SummaryCard.astro';
 import PageFooter from '../../components/PageFooter.astro';
 import { getCollection, render } from 'astro:content';
+import { filterDrafts } from '../../lib/draftFilter';
 
 export async function getStaticPaths() {
-  const scraps = await getCollection('scraps', ({ data }) => !data.draft);
+  const scraps = await getCollection('scraps', filterDrafts);
   return scraps.map((entry) => ({
     params: { slug: entry.id },
     props: { entry },

@@ -2,11 +2,12 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SummaryCard from '../../components/SummaryCard.astro';
 import { getCollection } from 'astro:content';
+import { filterDrafts } from '../../lib/draftFilter';
 
-const articles = await getCollection('articles', ({ data }) => !data.draft);
-const scraps = await getCollection('scraps', ({ data }) => !data.draft);
-const slides = await getCollection('slides', ({ data }) => !data.draft);
-const stories = await getCollection('stories', ({ data }) => !data.draft);
+const articles = await getCollection('articles', filterDrafts);
+const scraps = await getCollection('scraps', filterDrafts);
+const slides = await getCollection('slides', filterDrafts);
+const stories = await getCollection('stories', filterDrafts);
 
 const allItems = [
   ...articles.map((entry) => ({ entry, type: 'article' as const, href: `/articles/${entry.id}` })),
