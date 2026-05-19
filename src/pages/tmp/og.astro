@@ -19,7 +19,7 @@ const stories = await getCollection('stories', ({ data }) => !data.draft);
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet" />
 </head>
 <body class="flex flex-col gap-10 p-10 bg-[#ccc]">
-  <div id="og-home" class="shrink-0 shadow-xl w-[1200px] h-[630px]">
+  <div id="og-home" class="og-card-wrapper shrink-0 shadow-xl w-[1200px] h-[630px]">
     <OGImageCard
       title="いそしぎ忘備録"
       description="検証結果や試行記録を「物語として完成させ」、小さな成果として蓄積していくアウトプット共有サイト。"
@@ -28,7 +28,7 @@ const stories = await getCollection('stories', ({ data }) => !data.draft);
     />
   </div>
 
-  <div id="og-pages" class="shrink-0 shadow-xl w-[1200px] h-[630px]">
+  <div id="og-pages" class="og-card-wrapper shrink-0 shadow-xl w-[1200px] h-[630px]">
     <OGImageCard
       title="すべての記録"
       description="技術記事、スライド、ストーリーなど、すべてのコンテンツを時系列で一覧表示しています。"
@@ -38,7 +38,7 @@ const stories = await getCollection('stories', ({ data }) => !data.draft);
   </div>
 
   {articles.map((entry) => (
-    <div id={`og-article-${entry.id}`} class="shrink-0 shadow-xl w-[1200px] h-[630px]">
+    <div id={`og-article-${entry.id}`} class="og-card-wrapper shrink-0 shadow-xl w-[1200px] h-[630px]">
       <OGImageCard
         type="article"
         title={entry.data.title}
@@ -51,7 +51,7 @@ const stories = await getCollection('stories', ({ data }) => !data.draft);
   ))}
 
   {slides.map((entry) => (
-    <div id={`og-slide-${entry.id}`} class="shrink-0 shadow-xl w-[1200px] h-[630px]">
+    <div id={`og-slide-${entry.id}`} class="og-card-wrapper shrink-0 shadow-xl w-[1200px] h-[630px]">
       <OGImageCard
         type="slide"
         title={entry.data.title}
@@ -64,7 +64,7 @@ const stories = await getCollection('stories', ({ data }) => !data.draft);
   ))}
 
   {scraps.map((entry) => (
-    <div id={`og-scrap-${entry.id}`} class="shrink-0 shadow-xl w-[1200px] h-[630px]">
+    <div id={`og-scrap-${entry.id}`} class="og-card-wrapper shrink-0 shadow-xl w-[1200px] h-[630px]">
       <OGImageCard
         type="scrap"
         title={entry.data.title}
@@ -77,7 +77,7 @@ const stories = await getCollection('stories', ({ data }) => !data.draft);
   ))}
 
   {stories.map((entry) => (
-    <div id={`og-story-${entry.id}`} class="shrink-0 shadow-xl w-[1200px] h-[630px]">
+    <div id={`og-story-${entry.id}`} class="og-card-wrapper shrink-0 shadow-xl w-[1200px] h-[630px]">
       <OGImageCard
         type="story"
         title={entry.data.title}
