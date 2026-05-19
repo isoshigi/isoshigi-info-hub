@@ -1,4 +1,6 @@
 ---
+import { formatDate } from '../lib/formatDate.ts';
+
 export interface Props {
   eventName: string;
   date: Date;
@@ -6,13 +8,6 @@ export interface Props {
 }
 
 const { eventName, date, location } = Astro.props;
-
-const formatDate = (d: Date) => {
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${y}-${m}-${day}`;
-};
 ---
 
 <div class="card">
