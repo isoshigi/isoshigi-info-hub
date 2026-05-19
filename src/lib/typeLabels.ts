@@ -1,6 +1,6 @@
 export const typeLabels: Record<string, string> = {
   article: 'Article',
-  event: 'Event',
+  scrap: 'Scrap',
   slide: 'Slide',
   story: 'Story',
 };

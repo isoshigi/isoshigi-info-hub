@@ -4,11 +4,13 @@ import SummaryCard from '../components/SummaryCard.astro';
 import { getCollection } from 'astro:content';
 
 const articles = await getCollection('articles', ({ data }) => !data.draft);
+const scraps = await getCollection('scraps', ({ data }) => !data.draft);
 const slides = await getCollection('slides', ({ data }) => !data.draft);
 const stories = await getCollection('stories', ({ data }) => !data.draft);
 
 const latestItems = [
   ...articles.map((entry) => ({ entry, type: 'article' as const, href: `/articles/${entry.id}` })),
+  ...scraps.map((entry) => ({ entry, type: 'scrap' as const, href: `/scraps/${entry.id}` })),
   ...slides.map((entry) => ({ entry, type: 'slide' as const, href: `/slides/${entry.id}` })),
   ...stories.map((entry) => ({ entry, type: 'story' as const, href: `/stories/${entry.id}` })),
 ].sort((a, b) => b.entry.data.publishedAt.getTime() - a.entry.data.publishedAt.getTime())

@@ -23,19 +23,21 @@
 ├── src/
 │   ├── components/          # Astroコンポーネント
 │   │   ├── OGImageCard.astro
+│   │   ├── ScrapEntry.astro
 │   │   ├── ShareButton.astro
 │   │   └── SummaryCard.astro
 │   ├── content/             # コンテンツデータ
 │   │   ├── articles/        # 技術記事（*.mdx）
+│   │   ├── scraps/          # 調べ物（*.mdx）
 │   │   ├── slides/          # スライド（*.mdx）
-│   │   ├── stories/         # ストーリー（*.mdx）
-│   │   └── events/          # イベント参加記録（*.mdx）
+│   │   └── stories/         # ストーリー（*.mdx）
 │   ├── layouts/
 │   │   └── BaseLayout.astro
 │   ├── pages/               # ページルーティング
 │   │   ├── index.astro
 │   │   ├── pages/index.astro
 │   │   ├── articles/[slug].astro
+│   │   ├── scraps/[slug].astro
 │   │   ├── slides/[slug].astro
 │   │   ├── stories/[slug].astro
 │   │   └── tmp/og.astro     # OGP画像生成用（ビルド後に削除）
@@ -44,9 +46,9 @@
 │   └── content.config.ts    # コンテンツスキーマ定義
 ├── templates/               # コンテンツテンプレート
 │   ├── article.mdx
+│   ├── scrap.mdx
 │   ├── slide.mdx
-│   ├── story.mdx
-│   └── event.mdx
+│   └── story.mdx
 ├── doc/                     # 設計ドキュメント
 │   ├── content-data-structure.md
 │   ├── inception-deck.md
@@ -109,25 +111,9 @@ cp templates/slide.mdx src/content/slides/my-slide.mdx
 # ストーリーの場合
 cp templates/story.mdx src/content/stories/my-story.mdx
 
-# イベント参加記録の場合
-cp templates/event.mdx src/content/events/my-event.mdx
+# 調べ物の場合
+cp templates/scrap.mdx src/content/scraps/my-scrap.mdx
 ```
-
-### イベント参加記録の追加
-
-`src/content/events/` に MDX を配置する。イベントは個別ページを持たず、`/logs` 一覧に表示される。本文は持たず、フロントマターのみで構成する。
-
-```mdx
----
-eventName: "イベント名"
-dates:
-  - 2026-04-20
-location: "offline"
----
-```
-
-- `location` は `"online"` または `"offline"` を指定する（省略可）。
-- 同じイベントに複数回参加した場合は `dates` 配列に追加する。
 
 ## OGP 画像の自動生成
 
@@ -135,8 +121,8 @@ location: "offline"
 
 - トップページ: `/img/og.png`
 - `/pages` 一覧: `/img/pages/og.png`
-- `/logs` 一覧: `/img/logs/og.png`
 - 各記事: `/img/articles/{slug}/og.png`
+- 各調べ物: `/img/scraps/{slug}/og.png`
 - 各スライド: `/img/slides/{slug}/og.png`
 - 各ストーリー: `/img/stories/{slug}/og.png`
 - スライド PDF: `/pdf/slides/{slug}.pdf`

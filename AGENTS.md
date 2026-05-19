@@ -42,7 +42,7 @@ All content types share a common schema with a body (MDX) and are listed on **`/
 - **`scraps`** → `src/content/scraps/*.mdx`
   - Rendered at `/scraps/{slug}` (`[slug].astro`).
   - Schema: Common schema (no extra fields).
-  - Body is composed of `<ScrapEntry>` components, each with an optional `type` prop (`'note'` | `'quote'` | `'code'` | `'link'`) that controls visual styling. No size constraints.
+  - Body is composed of `<ScrapEntry>` components wrapping prose content. The ScrapEntry simply wraps each entry in a card-like container; all visual styling for type distinctions (quotes, code, links) is handled by standard MDX/prose markup. No size constraints.
 
 ### Listing Pages
 | URL | Content Types Shown |

@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SummaryCard from '../../components/SummaryCard.astro';
+import PageFooter from '../../components/PageFooter.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const scraps = await getCollection('scraps', ({ data }) => !data.draft);
+  return scraps.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<BaseLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  ogImage={`/img/scraps/${entry.id}/og.png`}
+  ogType="article"
+>
+  <article class="space-y-8">
+    <SummaryCard
+      type="scrap"
+      title={entry.data.title}
+      description={entry.data.description}
+      publishedAt={entry.data.publishedAt}
+      updatedAt={entry.data.updatedAt}
+      tags={entry.data.tags}
+      coverImage={entry.data.coverImage}
+    />
+
+    <div>
+      <Content />
+    </div>
+
+    <PageFooter />
+  </article>
+</BaseLayout>
