@@ -24,10 +24,7 @@ Compact instructions to avoid common mistakes in this Astro static site.
 ## Content Architecture
 
 Content is managed via Astro content collections defined in `src/content.config.ts`.
-All content types fall into two categories, each with its own listing page. This separation reflects the philosophy in `tmp/manifest2026.md`: intermediate artifacts are not published as-is; extracted insights are "completed as stories" and published as small, valuable outputs.
-
-### 通常コンテンツ（Standard Content）
-Common-schema content with a body (MDX). These are "completed stories" extracted from intermediate artifacts. Listed on **`/pages`** and the home page.
+All content types share a common schema with a body (MDX) and are listed on **`/pages`** and the home page.
 
 - **`articles`** → `src/content/articles/*.mdx`
   - Rendered at `/articles/{slug}` (`[slug].astro`).
@@ -36,27 +33,22 @@ Common-schema content with a body (MDX). These are "completed stories" extracted
 - **`slides`** → `src/content/slides/*.mdx`
   - Rendered at `/slides/{slug}` (`[slug].astro`).
   - Schema: Common schema + `theme?` (string).
+  - Body is composed of `<Slide>` components wrapping prose content. Each slide is an aspect-video card in a slide viewer.
 
 - **`stories`** → `src/content/stories/*.mdx`
   - Rendered at `/stories/{slug}` (`[slug].astro`).
   - Schema: Common schema + `storyFlow` (string array, min 1).
 
-### 軽量コンテンツ（Lightweight Content）
-Standalone-schema content with **frontmatter only** (no body). These are raw records, logs, and lightweight outputs that do not require a full narrative. Listed on dedicated **`/logs`** pages, never mixed into `/pages` or the home page.
-
-- **`events`** → `src/content/events/*.mdx`
-  - **No individual pages**. Listed only on `/logs` (`src/pages/logs/index.astro`).
-  - Schema: `eventName`, `dates` (ISO 8601 Date array, min 1), `location?` (`'online'` | `'offline'`).
-  - **No common-schema fields** (`title`, `description`, `publishedAt`, etc.) are used.
-  - File naming: `slug.mdx` (slug is **not** used in URLs; use any descriptive name).
-  - Multiple files with the same `eventName` should be merged into one record with multiple dates in the `dates` array.
-  - Additional lightweight collections may be added in the future; all will be listed under `/logs`.
+- **`scraps`** → `src/content/scraps/*.mdx`
+  - Rendered at `/scraps/{slug}` (`[slug].astro`).
+  - Schema: Common schema (no extra fields).
+  - Body is composed of `<ScrapEntry>` components wrapping prose content. The ScrapEntry simply wraps each entry in a card-like container; all visual styling for type distinctions (quotes, code, links) is handled by standard MDX/prose markup. No size constraints.
 
 ### Listing Pages
-| Page | URL | Content Types Shown |
-|------|-----|---------------------|
-| Standard Content | `/pages` | articles, slides, stories |
-| Lightweight Content | `/logs` | events (and any future lightweight collections) |
+| URL | Content Types Shown |
+|-----|---------------------|
+| `/pages` | articles, slides, stories, scraps |
+| `/` (home) | Latest items from all content types |
 
 ### Schema Quirks
 - `tags` are auto-deduplicated and empty strings are filtered out.
@@ -76,8 +68,8 @@ cp templates/slide.mdx src/content/slides/my-slide.mdx
 # New story
 cp templates/story.mdx src/content/stories/my-story.mdx
 
-# New event record
-cp templates/event.mdx src/content/events/my-event.mdx
+# New scrap
+cp templates/scrap.mdx src/content/scraps/my-scrap.mdx
 ```
 
 ## Styling Constraints
@@ -90,7 +82,7 @@ Follow the existing convention (executable truth in `src/styles/global.css`):
 
 ## Deploy
 
-- **Target**: Cloudflare (R2 + CDN / Pages).
+- **Target**: Cloudflare Workers Static Assets.
 - **Site URL**: `https://isoshigi.dev`
 - **Command**: `npx wrangler deploy`
 - CI/CD is configured via GitHub Actions (see `.github/workflows/deploy.yml`).
@@ -103,14 +95,14 @@ Cloudflare Web Analytics script has been removed from `src/layouts/BaseLayout.as
 
 OGP images and slide PDFs are automatically generated at build time via a single Playwright session.
 
-- **`src/pages/tmp/og.astro`**: Renders invisible OG image cards for every public article, slide, and story plus the home, `/pages`, and `/logs` pages.
+- **`src/pages/tmp/og.astro`**: Renders invisible OG image cards for every public article, slide, story, and scrap plus the home and `/pages` pages.
 - **`scripts/postbuild.mjs`**: Starts a local static server, opens `/tmp/og/` in a headless Chromium instance, screenshots each `.og-card-wrapper`, then generates PDFs for each slide page. Saves to:
   - `/img/og.png` (home page)
   - `/img/pages/og.png` (`/pages` listing)
-  - `/img/logs/og.png` (`/logs` listing)
   - `/img/articles/{slug}/og.png` (each article)
   - `/img/slides/{slug}/og.png` (each slide)
   - `/img/stories/{slug}/og.png` (each story)
+  - `/img/scraps/{slug}/og.png` (each scrap)
   - `/pdf/slides/{slug}.pdf` (each slide, A4, print media emulation)
 - After generation the `dist/tmp/` directory is deleted so it is never published.
 - `coverImage` is **not** used for OG images; it is only for the card thumbnail shown in `SummaryCard` lists.

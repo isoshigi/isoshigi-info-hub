@@ -2,13 +2,16 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SummaryCard from '../../components/SummaryCard.astro';
 import { getCollection } from 'astro:content';
+import { filterDrafts } from '../../lib/draftFilter';
 
-const articles = await getCollection('articles', ({ data }) => !data.draft);
-const slides = await getCollection('slides', ({ data }) => !data.draft);
-const stories = await getCollection('stories', ({ data }) => !data.draft);
+const articles = await getCollection('articles', filterDrafts);
+const scraps = await getCollection('scraps', filterDrafts);
+const slides = await getCollection('slides', filterDrafts);
+const stories = await getCollection('stories', filterDrafts);
 
 const allItems = [
   ...articles.map((entry) => ({ entry, type: 'article' as const, href: `/articles/${entry.id}` })),
+  ...scraps.map((entry) => ({ entry, type: 'scrap' as const, href: `/scraps/${entry.id}` })),
   ...slides.map((entry) => ({ entry, type: 'slide' as const, href: `/slides/${entry.id}` })),
   ...stories.map((entry) => ({ entry, type: 'story' as const, href: `/stories/${entry.id}` })),
 ].sort((a, b) => b.entry.data.publishedAt.getTime() - a.entry.data.publishedAt.getTime());
@@ -16,7 +19,7 @@ const allItems = [
 
 <BaseLayout
   title="すべての記録"
-  description="技術記事、スライド、ストーリーなど、すべてのアウトプットを時系列で一覧表示しています。"
+  description="技術記事、調べ物、スライド、ストーリーなど、すべてのアウトプットを時系列で一覧表示しています。"
   ogImage="/img/pages/og.png"
 >
   <div class="space-y-6">

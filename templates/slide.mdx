@@ -10,7 +10,7 @@ theme: "default"
 
 import SlideCard from '../../components/SlideCard.astro';
 
-<SlideCard>
+<SlideCard slideTitle={frontmatter.title}>
 
 ## スライド1
 
@@ -18,7 +18,7 @@ import SlideCard from '../../components/SlideCard.astro';
 
 </SlideCard>
 
-<SlideCard>
+<SlideCard slideTitle={frontmatter.title}>
 
 ## スライド2
 

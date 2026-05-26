@@ -65,14 +65,15 @@ async function generateOGImages(browser, port) {
       outputPath = path.join(distDir, 'img/og.png');
     } else if (id === 'og-pages') {
       outputPath = path.join(distDir, 'img/pages/og.png');
-    } else if (id === 'og-logs') {
-      outputPath = path.join(distDir, 'img/logs/og.png');
     } else if (id.startsWith('og-article-')) {
       const slug = id.replace('og-article-', '');
       outputPath = path.join(distDir, `img/articles/${slug}/og.png`);
     } else if (id.startsWith('og-slide-')) {
       const slug = id.replace('og-slide-', '');
       outputPath = path.join(distDir, `img/slides/${slug}/og.png`);
+    } else if (id.startsWith('og-scrap-')) {
+      const slug = id.replace('og-scrap-', '');
+      outputPath = path.join(distDir, `img/scraps/${slug}/og.png`);
     } else if (id.startsWith('og-story-')) {
       const slug = id.replace('og-story-', '');
       outputPath = path.join(distDir, `img/stories/${slug}/og.png`);
