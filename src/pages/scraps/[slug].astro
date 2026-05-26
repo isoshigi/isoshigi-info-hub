@@ -23,7 +23,7 @@ const { Content } = await render(entry);
   ogImage={`/img/scraps/${entry.id}/og.png`}
   ogType="article"
 >
-  <article class="space-y-8">
+  <article class="stack-section">
     <SummaryCard
       type="scrap"
       title={entry.data.title}
@@ -34,7 +34,7 @@ const { Content } = await render(entry);
       coverImage={entry.data.coverImage}
     />
 
-    <div class="flex flex-col gap-4">
+    <div class="stack-item">
       <Content />
     </div>
 

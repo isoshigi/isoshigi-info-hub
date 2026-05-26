@@ -7,6 +7,6 @@ export interface Props {
 const { href = '/pages', label = 'すべての記録に戻る' } = Astro.props;
 ---
 
-<footer class="pt-6 border-t border-border">
+<footer class="pt-content border-t border-border">
   <a href={href} class="text-sm font-medium text-text-muted hover:text-link-hover transition-colors">← {label}</a>
 </footer>

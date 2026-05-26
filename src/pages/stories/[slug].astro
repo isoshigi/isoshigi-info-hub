@@ -48,7 +48,7 @@ const resolvedFlow = entry.data.storyFlow
   ogImage={`/img/stories/${entry.id}/og.png`}
   ogType="article"
 >
-  <article class="space-y-8">
+  <article class="stack-section">
     <SummaryCard
       type="story"
       title={entry.data.title}
@@ -59,9 +59,9 @@ const resolvedFlow = entry.data.storyFlow
       coverImage={entry.data.coverImage}
     />
 
-    <section class="space-y-3">
+    <section class="stack-item">
       <h2 class="text-lg font-bold text-text">ストーリーフロー</h2>
-      <div class="flex flex-col gap-4">
+      <div class="content-list">
         {resolvedFlow.map((item) => (
           <SummaryCard
             type={item.collection === 'stories' ? 'story' : item.collection === 'slides' ? 'slide' : 'article'}
