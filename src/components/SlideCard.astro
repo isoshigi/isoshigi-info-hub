@@ -1,7 +1,9 @@
 ---
-export interface Props {}
+export interface Props {
+  slideTitle?: string;
+}
 
-const {} = Astro.props;
+const { slideTitle = "いそしぎ忘備録" } = Astro.props;
 ---
 
 <section class="slide-card">
@@ -14,7 +16,7 @@ const {} = Astro.props;
   </div>
   <footer class="slide-footer">
     <span class="slide-page-num"></span>
-    <span class="slide-site-name">いそしぎ忘備録</span>
+    <span class="slide-site-name">{slideTitle}</span>
   </footer>
 </section>
 
@@ -40,9 +42,9 @@ const {} = Astro.props;
   .slide-header,
   .slide-footer {
     @apply flex items-center justify-between text-text-muted shrink-0;
-    font-size: 24px;
+    font-size: 48px;
     line-height: 1;
-    padding: 12px 24px;
+    padding: 24px 48px;
   }
 
   .slide-body {
