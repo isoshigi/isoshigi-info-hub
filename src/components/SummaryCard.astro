@@ -24,8 +24,8 @@ const Element = href ? 'a' : 'div';
       <img src={coverImage} alt="" class="w-full h-32 object-cover" loading="lazy" />
     </div>
   )}
-  <div class="flex flex-col gap-2 min-w-0">
-    <div class="flex items-center gap-2 flex-wrap">
+  <div class="flex flex-col gap-tight min-w-0">
+    <div class="flex items-center gap-tight flex-wrap">
       <span class="badge">{typeLabels[type]}</span>
       <time class="text-xs text-text-muted" datetime={publishedAt.toISOString()}>
         {formatDate(publishedAt)}
@@ -37,7 +37,7 @@ const Element = href ? 'a' : 'div';
     <h3 class="text-base font-bold text-text truncate">{title}</h3>
     <p class="text-sm text-text-muted line-clamp-2">{description}</p>
     {tags && tags.length > 0 && (
-      <div class="flex flex-wrap gap-1.5 mt-1">
+      <div class="flex flex-wrap gap-tight mt-xs">
         {tags.map((tag) => (
           <span class="badge">{tag}</span>
         ))}

@@ -13,6 +13,23 @@
   --color-border: var(--color-slate-300);
   --color-accent: var(--color-sky-700);
   --color-accent-light: var(--color-sky-100);
+
+  /* Spacing tokens */
+  --spacing-section: 2rem;       /* 32px — major page sections */
+  --spacing-content: 1.5rem;     /* 24px — content blocks */
+  --spacing-item: 1rem;          /* 16px — cards, list items */
+  --spacing-tight: 0.5rem;       /* 8px  — tags, small clusters */
+  --spacing-xs: 0.25rem;         /* 4px  — micro adjustments */
+
+  /* Prose spacing tokens */
+  --spacing-prose-block: 1.5rem;
+  --spacing-prose-heading-top: 2rem;
+  --spacing-prose-heading-bottom: 0.75rem;
+  --spacing-prose-rule: 2rem;
+  --spacing-prose-list-indent: 1.75rem;
+  --spacing-prose-code-x: 0.4rem;
+  --spacing-prose-code-y: 0.2rem;
+  --spacing-prose-h2-pb: 0.3rem;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -33,14 +50,28 @@
   }
 
   .card {
-    @apply block bg-surface border-l-8 border-r-2 p-4 border-l-transparent border-r-transparent;
+    @apply block bg-surface border-l-8 border-r-2 p-item border-l-transparent border-r-transparent;
   }
   .interactive-card {
     @apply border-l-border border-r-border hover:border-l-accent hover:border-r-accent no-underline transition-colors;
   }
   .badge {
-    @apply inline-block px-2 py-0.5 text-xs font-semibold bg-accent-light text-text;
+    @apply inline-block px-tight py-xs text-xs font-semibold bg-accent-light text-text;
   }
+
+  /* Vertical stack patterns */
+  .stack-section { @apply flex flex-col gap-section; }
+  .stack-content { @apply flex flex-col gap-content; }
+  .stack-item    { @apply flex flex-col gap-item; }
+  .stack-tight   { @apply flex flex-col gap-tight; }
+
+  /* List pattern */
+  .content-list { @apply flex flex-col gap-item list-none p-0 m-0; }
+
+  /* Page layout patterns */
+  .page-grid  { @apply flex flex-col lg:flex-row gap-section; }
+  .page-main  { @apply flex-1 min-w-0; }
+  .page-aside { @apply w-full lg:w-64 shrink-0 space-y-item; }
 }
 
 @layer base {

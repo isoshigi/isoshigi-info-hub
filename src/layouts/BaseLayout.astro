@@ -41,11 +41,11 @@ const fullTitle = title === 'いそしぎ忘備録' ? title : `${title} | いそ
 </head>
 <body class="min-h-screen flex flex-col bg-bg">
   <header class="bg-header border-b-4 border-accent">
-    <div class="container-page py-4 flex items-center justify-between">
+    <div class="container-page py-item flex items-center justify-between">
       <a href="/" class="text-xl font-bold text-header-fg">
         いそしぎ忘備録
       </a>
-      <nav class="flex items-center gap-4">
+      <nav class="flex items-center gap-tight">
         <a href="/" class="text-sm font-medium text-header-fg transition-colors">Home</a>
         <a href="/pages" class="text-sm font-medium text-header-fg transition-colors">すべての記録</a>
 
@@ -53,14 +53,14 @@ const fullTitle = title === 'いそしぎ忘備録' ? title : `${title} | いそ
     </div>
   </header>
 
-  <div class="flex-1 container-page w-full py-8 flex flex-col lg:flex-row gap-8">
-    <main class="flex-1 min-w-0">
+  <div class="flex-1 container-page w-full py-section page-grid">
+    <main class="page-main">
       <slot />
     </main>
 
-    <aside class="w-full lg:w-64 shrink-0 space-y-4">
+    <aside class="page-aside">
       <div class="card">
-        <h3 class="text-sm font-bold text-text mb-2">このページをシェア</h3>
+        <h3 class="text-sm font-bold text-text mb-tight">このページをシェア</h3>
         <ShareButton
           url={canonicalURL.toString()}
           title={title}
@@ -68,14 +68,14 @@ const fullTitle = title === 'いそしぎ忘備録' ? title : `${title} | いそ
         />
       </div>
       <div class="card">
-        <h3 class="text-sm font-bold text-text mb-2">いそしぎのプロフィール</h3>
-        <p class="text-sm text-text-muted mb-3">28卒の専門学生。技術的なアウトプットを小さく継続していくことを目指しています。</p>
-        <p class="text-sm text-text-muted mb-3">基本情報技術者試験 合格<br>応用情報技術者試験 合格</p>
-        <div class="flex items-center gap-2 flex-wrap mb-2">
+        <h3 class="text-sm font-bold text-text mb-tight">いそしぎのプロフィール</h3>
+        <p class="text-sm text-text-muted mb-item">28卒の専門学生。技術的なアウトプットを小さく継続していくことを目指しています。</p>
+        <p class="text-sm text-text-muted mb-item">基本情報技術者試験 合格<br>応用情報技術者試験 合格</p>
+        <div class="flex items-center gap-tight flex-wrap mb-tight">
           <span class="badge">Go</span>
           <span class="badge">TypeScript</span>
         </div>
-        <div class="flex flex-col gap-1.5">
+        <div class="flex flex-col gap-tight">
           <a href="https://x.com/isoshigicchi" target="_blank" rel="noopener noreferrer" class="text-sm w-fit">X @isoshigicchi</a>
           <a href="https://github.com/isoshigi" target="_blank" rel="noopener noreferrer" class="text-sm w-fit">GitHub isoshigi</a>
         </div>
@@ -84,9 +84,9 @@ const fullTitle = title === 'いそしぎ忘備録' ? title : `${title} | いそ
   </div>
 
   <footer class="bg-header border-t-4 border-accent mt-auto">
-    <div class="container-page py-6 flex flex-col sm:flex-row items-center justify-between gap-2">
+    <div class="container-page py-content flex flex-col sm:flex-row items-center justify-between gap-tight">
       <p class="text-sm text-header-fg/60">© 2026 いそしぎ</p>
-      <div class="flex items-center gap-4">
+      <div class="flex items-center gap-tight">
         <a href="https://x.com/isoshigicchi" target="_blank" rel="noopener noreferrer" class="text-sm text-header-fg transition-colors">X</a>
         <a href="https://github.com/isoshigi" target="_blank" rel="noopener noreferrer" class="text-sm text-header-fg transition-colors">GitHub</a>
       </div>
