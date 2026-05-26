@@ -19,28 +19,36 @@
 │   ├── favicon.svg
 │   └── favicon.ico
 ├── scripts/
-│   └── generate-og-images.mjs  # ビルド時OGP画像生成スクリプト
+│   └── postbuild.mjs        # ビルド時OGP画像生成・スライドPDF出力スクリプト
 ├── src/
 │   ├── components/          # Astroコンポーネント
 │   │   ├── OGImageCard.astro
+│   │   ├── ScrapEntry.astro
 │   │   ├── ShareButton.astro
 │   │   └── SummaryCard.astro
 │   ├── content/             # コンテンツデータ
 │   │   ├── articles/        # 技術記事（*.mdx）
-│   │   └── events/          # イベント参加記録（*.mdx）
+│   │   ├── scraps/          # 調べ物（*.mdx）
+│   │   ├── slides/          # スライド（*.mdx）
+│   │   └── stories/         # ストーリー（*.mdx）
 │   ├── layouts/
 │   │   └── BaseLayout.astro
 │   ├── pages/               # ページルーティング
 │   │   ├── index.astro
 │   │   ├── pages/index.astro
 │   │   ├── articles/[slug].astro
+│   │   ├── scraps/[slug].astro
+│   │   ├── slides/[slug].astro
+│   │   ├── stories/[slug].astro
 │   │   └── tmp/og.astro     # OGP画像生成用（ビルド後に削除）
 │   ├── styles/
 │   │   └── global.css
 │   └── content.config.ts    # コンテンツスキーマ定義
 ├── templates/               # コンテンツテンプレート
 │   ├── article.mdx
-│   └── event.mdx
+│   ├── scrap.mdx
+│   ├── slide.mdx
+│   └── story.mdx
 ├── doc/                     # 設計ドキュメント
 │   ├── content-data-structure.md
 │   ├── inception-deck.md
@@ -97,39 +105,27 @@ npm run build
 # 技術記事の場合
 cp templates/article.mdx src/content/articles/my-post.mdx
 
-# イベント参加記録の場合
-cp templates/event.mdx src/content/events/my-event.mdx
+# スライドの場合
+cp templates/slide.mdx src/content/slides/my-slide.mdx
+
+# ストーリーの場合
+cp templates/story.mdx src/content/stories/my-story.mdx
+
+# 調べ物の場合
+cp templates/scrap.mdx src/content/scraps/my-scrap.mdx
 ```
-
-### イベント参加記録の追加
-
-`src/content/events/` に MDX を配置する。イベントは個別ページを持たず、`/pages` 共通一覧に表示される。
-
-```mdx
----
-title: "イベント参加記録タイトル"
-description: "概要"
-publishedAt: 2026-04-20
-eventDate: 2026-04-20
-eventName: "イベント名"
-location: "offline"
-draft: false
----
-
-## 得られた知見
-
-本文を書く。
-```
-
-- `location` は `"online"` または `"offline"` を指定する。
 
 ## OGP 画像の自動生成
 
-`npm run build` 実行時に、Playwright を使用して自動的に OGP 画像（1200×630px）が生成される。
+`npm run build` 実行時に、Playwright を使用して自動的に OGP 画像（1200×630px）とスライド PDF が生成される。
 
 - トップページ: `/img/og.png`
 - `/pages` 一覧: `/img/pages/og.png`
 - 各記事: `/img/articles/{slug}/og.png`
+- 各調べ物: `/img/scraps/{slug}/og.png`
+- 各スライド: `/img/slides/{slug}/og.png`
+- 各ストーリー: `/img/stories/{slug}/og.png`
+- スライド PDF: `/pdf/slides/{slug}.pdf`
 
 `coverImage` の有無に関わらず、タイトル・説明・公開日・タグなどから OG 画像が生成される。個別のOG画像が不要な場合でも、ホームページ用の `/img/og.png` がフォールバックとして使用される。
 

@@ -17,6 +17,6 @@ text += '\n@' + mention;
 const shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}&hashtags=${encodeURIComponent(hashtag)}`;
 ---
 
-<a href={shareUrl} target="_blank" rel="noopener noreferrer">
+<a href={shareUrl} target="_blank" rel="noopener noreferrer" class="text-sm font-medium text-accent hover:text-link-hover transition-colors">
   Xでシェア
 </a>
