@@ -33,10 +33,6 @@ const { entry } = Astro.props;
       coverImage={entry.data.coverImage}
     />
 
-    {entry.data.theme && (
-      <p class="text-xs text-text-muted">Theme: {entry.data.theme}</p>
-    )}
-
     <div class="aspect-video w-full border border-border overflow-hidden">
       <object data={`/pdf/slides/${entry.id}.pdf`} type="application/pdf" class="w-full h-full">
         <p class="text-text-muted text-sm p-4">
