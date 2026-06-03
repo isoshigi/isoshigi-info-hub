@@ -1,21 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SummaryCard from '../components/SummaryCard.astro';
-import { getCollection } from 'astro:content';
-import { filterDrafts } from '../lib/draftFilter';
+import { getAllContents } from '../lib/contents';
 
-const articles = await getCollection('articles', filterDrafts);
-const scraps = await getCollection('scraps', filterDrafts);
-const slides = await getCollection('slides', filterDrafts);
-const stories = await getCollection('stories', filterDrafts);
-
-const latestItems = [
-  ...articles.map((entry) => ({ entry, type: 'article' as const, href: `/articles/${entry.id}` })),
-  ...scraps.map((entry) => ({ entry, type: 'scrap' as const, href: `/scraps/${entry.id}` })),
-  ...slides.map((entry) => ({ entry, type: 'slide' as const, href: `/slides/${entry.id}` })),
-  ...stories.map((entry) => ({ entry, type: 'story' as const, href: `/stories/${entry.id}` })),
-].sort((a, b) => b.entry.data.publishedAt.getTime() - a.entry.data.publishedAt.getTime())
- .slice(0, 5);
+const latestItems = (await getAllContents()).slice(0, 5);
 ---
 
 <BaseLayout

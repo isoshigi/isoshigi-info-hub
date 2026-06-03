@@ -2,8 +2,9 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SummaryCard from '../../components/SummaryCard.astro';
 import PageFooter from '../../components/PageFooter.astro';
-import { getCollection, render } from 'astro:content';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
 import { filterDrafts } from '../../lib/draftFilter';
+import type { ContentType } from '../../lib/types';
 
 export async function getStaticPaths() {
   const stories = await getCollection('stories', filterDrafts);
@@ -16,30 +17,38 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 
+type StoryCollection = 'articles' | 'slides' | 'stories';
+type StoryEntry = CollectionEntry<'articles'> | CollectionEntry<'slides'> | CollectionEntry<'stories'>;
+
 const allArticles = await getCollection('articles', filterDrafts);
 const allSlides = await getCollection('slides', filterDrafts);
 const allStories = await getCollection('stories', filterDrafts);
-const entryMap: Record<string, Record<string, any>> = {
+const entryMap: Record<StoryCollection, Record<string, StoryEntry>> = {
   articles: Object.fromEntries(allArticles.map((e) => [e.id, e])),
   slides: Object.fromEntries(allSlides.map((e) => [e.id, e])),
   stories: Object.fromEntries(allStories.map((e) => [e.id, e])),
 };
 
-type StoryFlowItem = { collection: 'articles' | 'slides' | 'stories'; slug: string };
 const resolvedFlow = entry.data.storyFlow
-  .map((item: StoryFlowItem) => {
+  .map((item) => {
     const refEntry = entryMap[item.collection]?.[item.slug];
     if (!refEntry) {
       console.warn(`storyFlow: ${item.collection}/${item.slug} not found in story "${entry.id}"`);
       return null;
     }
+    const type: ContentType = item.collection === 'slides'
+      ? 'slide'
+      : item.collection === 'stories'
+        ? 'story'
+        : 'article';
     return {
       ...item,
+      type,
       entry: refEntry,
       href: `/${item.collection}/${item.slug}`,
     };
   })
-  .filter(Boolean);
+  .filter((item): item is NonNullable<typeof item> => item !== null);
 ---
 
 <BaseLayout
@@ -64,7 +73,7 @@ const resolvedFlow = entry.data.storyFlow
       <div class="content-list">
         {resolvedFlow.map((item) => (
           <SummaryCard
-            type={item.collection === 'stories' ? 'story' : item.collection === 'slides' ? 'slide' : 'article'}
+            type={item.type}
             title={item.entry.data.title}
             description={item.entry.data.description}
             publishedAt={item.entry.data.publishedAt}
