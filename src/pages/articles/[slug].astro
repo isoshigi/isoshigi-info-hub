@@ -1,7 +1,5 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import SummaryCard from '../../components/ui/SummaryCard.astro';
-import PageFooter from '../../components/ui/PageFooter.astro';
+import ContentLayout from '../../layouts/ContentLayout.astro';
 import { getCollection, render } from 'astro:content';
 import { filterDrafts } from '../../lib/draftFilter';
 
@@ -17,27 +15,6 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 ---
 
-<BaseLayout
-  title={entry.data.title}
-  description={entry.data.description}
-  ogImage={`/img/articles/${entry.id}/og.png`}
-  ogType="article"
->
-  <article class="stack-section">
-    <SummaryCard
-      type="article"
-      title={entry.data.title}
-      description={entry.data.description}
-      publishedAt={entry.data.publishedAt}
-      updatedAt={entry.data.updatedAt}
-      tags={entry.data.tags}
-      coverImage={entry.data.coverImage}
-    />
-
-    <div class="prose">
-      <Content />
-    </div>
-
-    <PageFooter />
-  </article>
-</BaseLayout>
+<ContentLayout entry={entry} type="article">
+  <Content />
+</ContentLayout>
