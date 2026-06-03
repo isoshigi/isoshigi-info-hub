@@ -1,9 +1,10 @@
 ---
-import { typeLabels } from '../lib/typeLabels.ts';
-import { formatDate } from '../lib/formatDate.ts';
+import { typeLabels } from '../lib/typeLabels';
+import { formatDate } from '../lib/formatDate';
+import type { ContentType } from '../lib/types';
 
 export interface Props {
-  type?: 'article' | 'scrap' | 'slide' | 'story';
+  type?: ContentType;
   title: string;
   description: string;
   publishedAt: Date;
