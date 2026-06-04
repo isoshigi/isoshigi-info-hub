@@ -16,7 +16,7 @@ const items = await getAllContents();
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet" />
 </head>
 <body class="flex flex-col gap-10 p-10 bg-[#ccc]">
-  <div id="og-home" class="og-card-wrapper shrink-0 shadow-xl w-[1200px] h-[630px]">
+  <div id="og-home" class="og-card-wrapper shrink-0 shadow-xl w-300 h-157.5">
     <OGImageCard
       title="いそしぎ忘備録"
       description="検証結果や試行記録を「物語として完成させ」、小さな成果として蓄積していくアウトプット共有サイト。"
@@ -25,7 +25,7 @@ const items = await getAllContents();
     />
   </div>
 
-  <div id="og-pages" class="og-card-wrapper shrink-0 shadow-xl w-[1200px] h-[630px]">
+  <div id="og-pages" class="og-card-wrapper shrink-0 shadow-xl w-300 h-157.5">
     <OGImageCard
       title="すべての記録"
       description="技術記事、スライド、ストーリーなど、すべてのコンテンツを時系列で一覧表示しています。"
@@ -35,7 +35,7 @@ const items = await getAllContents();
   </div>
 
   {items.map(({ entry, type }) => (
-    <div id={`og-${type}-${entry.id}`} class="og-card-wrapper shrink-0 shadow-xl w-[1200px] h-[630px]">
+    <div id={`og-${type}-${entry.id}`} class="og-card-wrapper shrink-0 shadow-xl w-300 h-157.5">
       <OGImageCard
         type={type}
         title={entry.data.title}

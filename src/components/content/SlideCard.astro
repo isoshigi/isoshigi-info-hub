@@ -6,7 +6,7 @@ export interface Props {
 const { slideTitle = "いそしぎ忘備録" } = Astro.props;
 ---
 
-<section class="bg-surface flex flex-col box-border overflow-hidden w-[1920px] h-[1080px] slide-card">
+<section class="bg-surface flex flex-col box-border overflow-hidden w-480 h-270 break-after-page slide-card">
   <header class="flex items-center justify-between text-text-muted shrink-0 text-[48px] leading-none py-6 px-12">
     <span class="text-text-muted">いそしぎ忘備録</span>
     <span class="slide-page-num"></span>
@@ -21,23 +21,24 @@ const { slideTitle = "いそしぎ忘備録" } = Astro.props;
 </section>
 
 <style is:global>
-  @reference "/src/styles/global.css";
-
   body {
     counter-reset: slide-page;
   }
+</style>
 
+<style>
+  @reference "tailwindcss";
+  
   .slide-card {
-    page-break-after: always;
     counter-increment: slide-page;
   }
 
   .slide-card:last-child {
-    page-break-after: auto;
+    @apply break-after-auto;
   }
 
   .slide-page-num::before {
     content: counter(slide-page);
-    font-weight: 700;
+    @apply font-bold;
   }
 </style>
