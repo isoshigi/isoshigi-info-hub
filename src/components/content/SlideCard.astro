@@ -1,0 +1,44 @@
+---
+export interface Props {
+  slideTitle?: string;
+}
+
+const { slideTitle = "いそしぎ忘備録" } = Astro.props;
+---
+
+<section class="bg-surface flex flex-col box-border overflow-hidden w-480 h-270 break-after-page slide-card">
+  <header class="flex items-center justify-between text-text-muted shrink-0 text-[48px] leading-none py-6 px-12">
+    <span class="text-text-muted">いそしぎ忘備録</span>
+    <span class="slide-page-num"></span>
+  </header>
+  <div class="flex-1 overflow-hidden flex flex-col justify-center py-0 px-6 prose" style="zoom: 3;">
+    <slot />
+  </div>
+  <footer class="flex items-center justify-between text-text-muted shrink-0 text-[48px] leading-none py-6 px-12">
+    <span class="slide-page-num"></span>
+    <span class="text-text-muted">{slideTitle}</span>
+  </footer>
+</section>
+
+<style is:global>
+  body {
+    counter-reset: slide-page;
+  }
+</style>
+
+<style>
+  @reference "tailwindcss";
+  
+  .slide-card {
+    counter-increment: slide-page;
+  }
+
+  .slide-card:last-child {
+    @apply break-after-auto;
+  }
+
+  .slide-page-num::before {
+    content: counter(slide-page);
+    @apply font-bold;
+  }
+</style>

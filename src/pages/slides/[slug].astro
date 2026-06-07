@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import SummaryCard from '../../components/SummaryCard.astro';
-import PageFooter from '../../components/PageFooter.astro';
+import SummaryCard from '../../components/ui/SummaryCard.astro';
+import PageFooter from '../../components/ui/PageFooter.astro';
 import { getCollection } from 'astro:content';
 import { filterDrafts } from '../../lib/draftFilter';
 
@@ -32,10 +32,6 @@ const { entry } = Astro.props;
       tags={entry.data.tags}
       coverImage={entry.data.coverImage}
     />
-
-    {entry.data.theme && (
-      <p class="text-xs text-text-muted">Theme: {entry.data.theme}</p>
-    )}
 
     <div class="aspect-video w-full border border-border overflow-hidden">
       <object data={`/pdf/slides/${entry.id}.pdf`} type="application/pdf" class="w-full h-full">

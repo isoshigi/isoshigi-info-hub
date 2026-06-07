@@ -27,9 +27,7 @@
   --spacing-prose-heading-bottom: 0.75rem;
   --spacing-prose-rule: 2rem;
   --spacing-prose-list-indent: 1.75rem;
-  --spacing-prose-code-x: 0.4rem;
-  --spacing-prose-code-y: 0.2rem;
-  --spacing-prose-h2-pb: 0.3rem;
+
 }
 
 @media (prefers-color-scheme: dark) {

@@ -10,7 +10,7 @@
     @apply font-bold leading-tight mt-prose-heading-top mb-prose-heading-bottom text-text;
   }
   .prose h1 { @apply text-3xl; }
-  .prose h2 { @apply text-2xl border-b border-border pb-prose-h2-pb; }
+  .prose h2 { @apply text-2xl border-b border-border pb-[0.3rem]; }
   .prose h3 { @apply text-xl; }
   .prose h4 { @apply text-lg; }
   .prose h5 { @apply text-base; }
@@ -25,7 +25,7 @@
   .prose code:not(pre code) {
     font-family: ui-monospace, SFMono-Regular, monospace;
     font-size: 0.875em;
-    @apply bg-accent-light font-semibold px-prose-code-x py-prose-code-y;
+    @apply bg-accent-light font-semibold px-[0.4rem] py-[0.2rem];
   }
   .prose pre {
     @apply bg-surface border border-border p-content overflow-x-auto mb-prose-block text-sm leading-normal;
