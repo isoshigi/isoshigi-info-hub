@@ -20,6 +20,7 @@ Compact instructions to avoid common mistakes in this Astro static site.
 | `npm run dev` | Dev server at `localhost:4321` |
 | `npm run build` | Production build to `./dist/` |
 | `npm run preview` | Preview built output locally |
+| `npm run deploy` | Deploy to Cloudflare Workers Static Assets |
 
 ## Content Architecture
 
@@ -82,8 +83,8 @@ Follow the existing convention (executable truth in `src/styles/global.css`):
 
 ## Deploy
 
-- **Target**: Cloudflare Workers Static Assets.
-- **Site URL**: `https://isoshigi.dev`
+- **Target**: Cloudflare Workers Static Assets (see `wrangler.toml`).
+- **Site URL**: `https://blog.isoshigi.dev`
 - **Command**: `npx wrangler deploy`
 - CI/CD is configured via GitHub Actions (see `.github/workflows/deploy.yml`).
 
