@@ -1,0 +1,34 @@
+---
+export interface Props {
+  slideTitle?: string;
+}
+
+const { slideTitle = "いそしぎ忘備録" } = Astro.props;
+---
+
+<section
+  class="w-[var(--render-slide-width)] h-[var(--render-slide-height)]
+         bg-surface text-text overflow-hidden flex flex-col
+         [break-after:page] last:[break-after:auto] [counter-increment:slide-page]"
+>
+  <header
+    class="flex items-center justify-between text-text-muted shrink-0
+           text-5xl leading-none py-content px-12"
+  >
+    <span>いそしぎ忘備録</span>
+    <span class="before:[content:counter(slide-page)] before:font-bold"></span>
+  </header>
+  <div
+    class="prose flex-1 overflow-hidden flex flex-col justify-center px-12
+           [zoom:var(--render-slide-zoom)]"
+  >
+    <slot />
+  </div>
+  <footer
+    class="flex items-center justify-between text-text-muted shrink-0
+           text-5xl leading-none py-content px-12"
+  >
+    <span class="before:[content:counter(slide-page)] before:font-bold"></span>
+    <span>{slideTitle}</span>
+  </footer>
+</section>

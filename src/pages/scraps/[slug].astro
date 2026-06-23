@@ -1,5 +1,6 @@
 ---
-import ContentLayout from '../../layouts/ContentLayout.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ContentBody from '../../components/display/ContentBody.astro';
 import { getCollection, render } from 'astro:content';
 import { filterDrafts } from '../../lib/draftFilter';
 
@@ -15,6 +16,13 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 ---
 
-<ContentLayout entry={entry} type="scrap" contentClass="stack-item">
-  <Content />
-</ContentLayout>
+<BaseLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  ogImage={`/img/scraps/${entry.id}/og.png`}
+  ogType="article"
+>
+  <ContentBody entry={entry} type="scrap" contentClass="stack-item">
+    <Content />
+  </ContentBody>
+</BaseLayout>

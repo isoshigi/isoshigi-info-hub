@@ -1,9 +1,10 @@
 ---
-import '../../../styles/global.css';
+import RenderLayout from '../../../layouts/RenderLayout.astro';
 import { getCollection, render } from 'astro:content';
+import { filterDrafts } from '../../../lib/draftFilter';
 
 export async function getStaticPaths() {
-  const slides = await getCollection('slides', ({ data }) => !data.draft);
+  const slides = await getCollection('slides', filterDrafts);
   return slides.map((entry) => ({
     params: { slug: entry.id },
     props: { entry },
@@ -14,18 +15,10 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 ---
 
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet" />
-  <style>
-    body { font-family: "Noto Sans JP", sans-serif; }
-  </style>
-</head>
-<body>
+<RenderLayout>
   <Content />
-</body>
-</html>
+</RenderLayout>
+
+<style is:global>
+  body { counter-reset: slide-page; }
+</style>

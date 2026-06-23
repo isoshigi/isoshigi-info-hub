@@ -22,27 +22,27 @@
 │   └── postbuild.mjs        # ビルド時OGP画像生成・スライドPDF出力スクリプト
 ├── src/
 │   ├── components/          # Astroコンポーネント
-│   │   ├── content/         # コンテンツ用コンポーネント
+│   │   ├── display/         # ページ表示用コンポーネント
+│   │   │   ├── ContentBody.astro
+│   │   │   ├── PageFooter.astro
 │   │   │   ├── ScrapEntry.astro
-│   │   │   └── SlideCard.astro
-│   │   ├── internal/        # 内部用コンポーネント
-│   │   │   └── OGImageCard.astro
-│   │   └── ui/              # UIコンポーネント
-│   │       ├── PageFooter.astro
-│   │       ├── ShareButton.astro
-│   │       └── SummaryCard.astro
+│   │   │   ├── ShareButton.astro
+│   │   │   └── SummaryCard.astro
+│   │   └── render/          # ビルド時描画用コンポーネント（OG画像 / スライドPDF）
+│   │       ├── OGImageCard.astro
+│   │       └── SlideCard.astro
 │   ├── content/             # コンテンツデータ
 │   │   ├── articles/        # 技術記事（*.mdx）
 │   │   ├── scraps/          # 調べ物（*.mdx）
 │   │   ├── slides/          # スライド（*.mdx）
 │   │   └── stories/         # ストーリー（*.mdx）
 │   ├── layouts/
-│   │   ├── BaseLayout.astro
-│   │   └── ContentLayout.astro
+│   │   └── BaseLayout.astro
 │   ├── lib/                 # ユーティリティ
 │   │   ├── contents.ts
 │   │   ├── draftFilter.ts
 │   │   ├── formatDate.ts
+│   │   ├── storyFlow.ts
 │   │   ├── typeLabels.ts
 │   │   └── types.ts
 │   ├── pages/               # ページルーティング
@@ -52,7 +52,9 @@
 │   │   ├── scraps/[slug].astro
 │   │   ├── slides/[slug].astro
 │   │   ├── stories/[slug].astro
-│   │   └── tmp/og.astro     # OGP画像生成用（ビルド後に削除）
+│   │   └── tmp/             # ビルド時のみ使用（生成後に削除）
+│   │       ├── og.astro     # OGP画像生成用
+│   │       └── slides/[slug].astro  # スライドPDF生成用
 │   ├── styles/
 │   │   ├── global.css
 │   │   └── prose.css
@@ -186,4 +188,5 @@ npm run deploy
 | `npm run dev`   | 開発サーバーを起動する（localhost:4321）     |
 | `npm run build` | 本番用にビルドする（./dist/ に出力）         |
 | `npm run preview` | ビルド結果をローカルでプレビューする        |
+| `npm run typecheck` | `astro check` で型チェックする           |
 | `npm run deploy` | Cloudflare Workers Static Assets にデプロイする |

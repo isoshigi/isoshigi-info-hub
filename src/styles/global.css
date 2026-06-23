@@ -1,86 +1,103 @@
 @import "tailwindcss";
 @import "./prose.css";
 
+/* ============================================================
+ * Design tokens (@theme) — 唯一の出所
+ * ============================================================ */
 @theme {
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-  --color-bg: var(--color-slate-200);
-  --color-surface: var(--color-slate-50);
-  --color-header: var(--color-slate-900);
-  --color-header-fg: var(--color-slate-50);
-  --color-text: var(--color-slate-900);
-  --color-text-muted: var(--color-slate-700);
-  --color-link-hover: var(--color-sky-500);
-  --color-border: var(--color-slate-300);
-  --color-accent: var(--color-sky-700);
+  /* Font stack (Noto Sans JP → system fallback) */
+  --font-sans: "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+
+  /* Semantic colors (derived from sky / slate) */
+  --color-bg:           var(--color-slate-200);
+  --color-surface:      var(--color-slate-50);
+  --color-header:       var(--color-slate-900);
+  --color-header-fg:    var(--color-slate-50);
+  --color-text:         var(--color-slate-900);
+  --color-text-muted:   var(--color-slate-700);
+  --color-link-hover:   var(--color-sky-500);
+  --color-border:       var(--color-slate-300);
+  --color-accent:       var(--color-sky-700);
   --color-accent-light: var(--color-sky-100);
 
-  /* Spacing tokens */
-  --spacing-section: 2rem;       /* 32px — major page sections */
-  --spacing-content: 1.5rem;     /* 24px — content blocks */
-  --spacing-item: 1rem;          /* 16px — cards, list items */
-  --spacing-tight: 0.5rem;       /* 8px  — tags, small clusters */
-  --spacing-xs: 0.25rem;         /* 4px  — micro adjustments */
+  /* Page spacing */
+  --spacing-section:  2rem;     /* 32px */
+  --spacing-content:  1.5rem;   /* 24px */
+  --spacing-item:     1rem;     /* 16px */
+  --spacing-tight:    0.5rem;   /* 8px */
+  --spacing-xs:       0.25rem;  /* 4px */
 
-  /* Prose spacing tokens */
-  --spacing-prose-block: 1.5rem;
-  --spacing-prose-heading-top: 2rem;
+  /* Prose spacing */
+  --spacing-prose-block:          1.5rem;
+  --spacing-prose-heading-top:    2rem;
   --spacing-prose-heading-bottom: 0.75rem;
-  --spacing-prose-rule: 2rem;
-  --spacing-prose-list-indent: 1.75rem;
+  --spacing-prose-rule:           2rem;
+  --spacing-prose-list-indent:    1.75rem;
 
+  /* Build-time render card dimensions */
+  --render-og-width:     1200px;
+  --render-og-height:    630px;
+  --render-slide-width:  1920px;
+  --render-slide-height: 1080px;
+  --render-slide-zoom:   3;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-bg: var(--color-slate-800);
-    --color-surface: var(--color-slate-950);
-    --color-text: var(--color-slate-100);
-    --color-text-muted: var(--color-slate-300);
-    --color-border: var(--color-slate-700);
-    --color-accent: var(--color-sky-300);
+    --color-bg:           var(--color-slate-800);
+    --color-surface:      var(--color-slate-950);
+    --color-text:         var(--color-slate-100);
+    --color-text-muted:   var(--color-slate-300);
+    --color-border:       var(--color-slate-700);
+    --color-accent:       var(--color-sky-300);
     --color-accent-light: var(--color-sky-900);
   }
 }
 
-@layer components {
-  .container-page {
-    @apply max-w-5xl mx-auto px-4;
-  }
-
-  .card {
-    @apply block bg-surface border-l-8 border-r-2 p-item border-l-transparent border-r-transparent;
-  }
-  .interactive-card {
-    @apply border-l-border border-r-border hover:border-l-accent hover:border-r-accent no-underline transition-colors;
-  }
-  .badge {
-    @apply inline-block px-tight py-xs text-xs font-semibold bg-accent-light text-text;
-  }
-
-  /* Vertical stack patterns */
-  .stack-section { @apply flex flex-col gap-section; }
-  .stack-content { @apply flex flex-col gap-content; }
-  .stack-item    { @apply flex flex-col gap-item; }
-  .stack-tight   { @apply flex flex-col gap-tight; }
-
-  /* List pattern */
-  .content-list { @apply flex flex-col gap-item list-none p-0 m-0; }
-
-  /* Page layout patterns */
-  .page-grid  { @apply flex flex-col lg:flex-row gap-section; }
-  .page-main  { @apply flex-1 min-w-0; }
-  .page-aside { @apply w-full lg:w-64 shrink-0 space-y-item; }
-}
-
+/* ============================================================
+ * Element defaults (@layer base)
+ * ============================================================ */
 @layer base {
   body {
     @apply font-sans text-text bg-bg;
     line-height: 1.75;
   }
-  a {
-    @apply underline;
-  }
-  a:hover {
-    @apply text-link-hover;
-  }
+  a         { @apply underline; }
+  a:hover   { @apply text-link-hover; }
+}
+
+/* ============================================================
+ * Reusable patterns (@layer components)
+ * ============================================================ */
+@layer components {
+  /* container */
+  .container-page { @apply max-w-5xl mx-auto px-4; }
+
+  /* card variants */
+  .card            { @apply block bg-surface border-l-8 border-r-2 p-item border-l-transparent border-r-transparent; }
+  .interactive-card{ @apply border-l-border border-r-border hover:border-l-accent hover:border-r-accent no-underline transition-colors; }
+
+  /* badge */
+  .badge { @apply inline-block px-tight py-xs text-xs font-semibold bg-accent-light text-text; }
+
+  /* typography shortcuts */
+  .text-page-title    { @apply text-2xl font-bold text-text; }
+  .text-page-subtitle { @apply text-lg font-bold text-text; }
+  .text-meta          { @apply text-sm font-medium; }
+  .text-meta-muted    { @apply text-sm font-medium text-text-muted; }
+  .text-faint         { @apply text-sm; color: color-mix(in srgb, var(--color-header-fg) 60%, transparent); }
+
+  /* stacks */
+  .stack-section { @apply flex flex-col gap-section; }
+  .stack-content { @apply flex flex-col gap-content; }
+  .stack-item    { @apply flex flex-col gap-item; }
+  .stack-tight   { @apply flex flex-col gap-tight; }
+
+  /* list */
+  .content-list  { @apply flex flex-col gap-item list-none p-0 m-0; }
+
+  /* page grid */
+  .page-grid     { @apply flex flex-col lg:flex-row gap-section; }
+  .page-main     { @apply flex-1 min-w-0; }
+  .page-aside    { @apply w-full lg:w-64 shrink-0 space-y-item; }
 }

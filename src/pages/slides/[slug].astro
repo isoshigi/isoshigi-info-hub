@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import SummaryCard from '../../components/ui/SummaryCard.astro';
-import PageFooter from '../../components/ui/PageFooter.astro';
+import ContentBody from '../../components/display/ContentBody.astro';
 import { getCollection } from 'astro:content';
 import { filterDrafts } from '../../lib/draftFilter';
 
@@ -22,17 +21,7 @@ const { entry } = Astro.props;
   ogImage={`/img/slides/${entry.id}/og.png`}
   ogType="article"
 >
-  <article class="stack-content">
-    <SummaryCard
-      type="slide"
-      title={entry.data.title}
-      description={entry.data.description}
-      publishedAt={entry.data.publishedAt}
-      updatedAt={entry.data.updatedAt}
-      tags={entry.data.tags}
-      coverImage={entry.data.coverImage}
-    />
-
+  <ContentBody entry={entry} type="slide" contentClass="stack-content">
     <div class="aspect-video w-full border border-border overflow-hidden">
       <object data={`/pdf/slides/${entry.id}.pdf`} type="application/pdf" class="w-full h-full">
         <p class="text-text-muted text-sm p-4">
@@ -40,7 +29,5 @@ const { entry } = Astro.props;
         </p>
       </object>
     </div>
-
-    <PageFooter />
-  </article>
+  </ContentBody>
 </BaseLayout>

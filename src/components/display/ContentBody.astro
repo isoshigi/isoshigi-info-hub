@@ -1,0 +1,32 @@
+---
+import SummaryCard from './SummaryCard.astro';
+import PageFooter from './PageFooter.astro';
+import type { ContentEntry } from '../../lib/contents';
+import type { ContentType } from '../../lib/types';
+
+interface Props {
+  entry: ContentEntry['entry'];
+  type: ContentType;
+  contentClass?: string;
+}
+
+const { entry, type, contentClass = 'prose' } = Astro.props;
+const { title, description, publishedAt, updatedAt, tags, coverImage } = entry.data;
+---
+
+<article class="stack-section">
+  <slot name="before-content" />
+  <SummaryCard
+    type={type}
+    title={title}
+    description={description}
+    publishedAt={publishedAt}
+    updatedAt={updatedAt}
+    tags={tags}
+    coverImage={coverImage}
+  />
+  <div class={contentClass}>
+    <slot />
+  </div>
+  <PageFooter />
+</article>

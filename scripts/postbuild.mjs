@@ -54,7 +54,7 @@ async function generateOGImages(browser, port) {
   await page.goto(`http://localhost:${port}/tmp/og/`, { waitUntil: 'networkidle' });
   await page.evaluate(() => document.fonts.ready);
 
-  const elements = await page.locator('.og-card-wrapper').all();
+  const elements = await page.locator('[id^="og-"]').all();
 
   for (const el of elements) {
     const id = await el.getAttribute('id');
