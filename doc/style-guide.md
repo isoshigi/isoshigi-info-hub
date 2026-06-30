@@ -21,10 +21,12 @@ Tailwind CSS の `sky` と `slate` を基本とする。
 
 ## 3. タイポグラフィの判断基準
 
-- **フォント**: システムフォントスタックのみ。Webフォントの読み込みは行わない。
-  - **例外**: OG画像生成時のみ、Google Fonts（`Noto Sans JP`）を使用して日本語の正確なレンダリングを行う。
+- **フォント**: Noto Sans JP（400 / 700）を `BaseLayout.astro` の `<head>` で全ページに読み込み、フォールバックにシステムフォントスタックを連結する。
 - **階層**: 情報の優先度を、サイズと字重で表現する。極端なサイズの乱用は避ける。
 - **行間**: 本文は読みやすい程度に広めに取る。
+- **タイポ抽象** (`.text-page-title` / `.text-page-subtitle` / `.text-meta` / `.text-meta-muted` / `.text-faint`):
+  意味のある階層（ページタイトル、ページサブタイトル、メタ情報、薄色キャプション）は `@layer components` のクラスで抽象化する。直接 `text-2xl font-bold` などを当てない。
+- **色表現**: 透明を含む中間色は `color-mix(in srgb, ...)` を許容する（例: `.text-faint`）。
 
 ## 4. レイアウトの判断基準
 
@@ -51,6 +53,7 @@ Tailwind CSS の `sky` と `slate` を基本とする。
 3. **`@layer components`（再利用パターン層）**
    - `src/styles/global.css` または独立したCSSファイル（例：`prose.css`）に配置する。
    - 複数のコンポーネント・ページで共通に使われる**抽象パターン**のみを定義する。例：`.card`、`.badge`、`.prose`。
+   - **OG / slide render 専用クラスは components 層に含めない**。各 render コンポーネント（`src/components/render/`）の scoped style で定義する。
    - ページ固有・用途固有のスタイルはここに入れない。例：スライド専用の `.slide-*` は除外する。
    - 命名規則：パターン名は具体名（`.card`）、状態は修飾子（`.interactive-card`）で表現する。
    - **レイアウトパターン**として、`.stack-section`、`.stack-content`、`.stack-item`、`.content-list`、`.page-grid` などを提供する。これらは Tailwind のユーティリティクラスの組み合わせを抽象化したものであり、ページやコンポーネントではこれらを優先して使用する。

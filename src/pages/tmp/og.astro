@@ -1,50 +1,42 @@
 ---
-import OGImageCard from '../../components/internal/OGImageCard.astro';
-import '../../styles/global.css';
+import RenderLayout from '../../layouts/RenderLayout.astro';
+import OGImageCard from '../../components/render/OGImageCard.astro';
 import { getAllContents } from '../../lib/contents';
 
 const items = await getAllContents();
 ---
 
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8" />
-  <title>OG Image Generation</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet" />
-</head>
-<body class="flex flex-col gap-10 p-10 bg-[#ccc]">
-  <div id="og-home" class="og-card-wrapper shrink-0 shadow-xl w-300 h-157.5">
-    <OGImageCard
-      title="いそしぎ忘備録"
-      description="検証結果や試行記録を「物語として完成させ」、小さな成果として蓄積していくアウトプット共有サイト。"
-      publishedAt={new Date('2026-01-01')}
-      tags={[]}
-    />
-  </div>
-
-  <div id="og-pages" class="og-card-wrapper shrink-0 shadow-xl w-300 h-157.5">
-    <OGImageCard
-      title="すべての記録"
-      description="技術記事、スライド、ストーリーなど、すべてのコンテンツを時系列で一覧表示しています。"
-      publishedAt={new Date('2026-01-01')}
-      tags={[]}
-    />
-  </div>
-
-  {items.map(({ entry, type }) => (
-    <div id={`og-${type}-${entry.id}`} class="og-card-wrapper shrink-0 shadow-xl w-300 h-157.5">
+<RenderLayout>
+  <div class="flex flex-col gap-10 p-10 bg-slate-400">
+    <div id="og-home" class="w-[var(--render-og-width)] h-[var(--render-og-height)] shrink-0 shadow-xl">
       <OGImageCard
-        type={type}
-        title={entry.data.title}
-        description={entry.data.description}
-        publishedAt={entry.data.publishedAt}
-        updatedAt={entry.data.updatedAt}
-        tags={entry.data.tags}
+        title="いそしぎ忘備録"
+        description="検証結果や試行記録を「物語として完成させ」、小さな成果として蓄積していくアウトプット共有サイト。"
+        publishedAt={new Date('2026-01-01')}
+        tags={[]}
       />
     </div>
-  ))}
-</body>
-</html>
+
+    <div id="og-pages" class="w-[var(--render-og-width)] h-[var(--render-og-height)] shrink-0 shadow-xl">
+      <OGImageCard
+        title="すべての記録"
+        description="技術記事、スライド、ストーリーなど、すべてのコンテンツを時系列で一覧表示しています。"
+        publishedAt={new Date('2026-01-01')}
+        tags={[]}
+      />
+    </div>
+
+    {items.map(({ entry, type }) => (
+      <div id={`og-${type}-${entry.id}`} class="w-[var(--render-og-width)] h-[var(--render-og-height)] shrink-0 shadow-xl">
+        <OGImageCard
+          type={type}
+          title={entry.data.title}
+          description={entry.data.description}
+          publishedAt={entry.data.publishedAt}
+          updatedAt={entry.data.updatedAt}
+          tags={entry.data.tags}
+        />
+      </div>
+    ))}
+  </div>
+</RenderLayout>

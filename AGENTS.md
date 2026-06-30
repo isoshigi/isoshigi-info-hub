@@ -10,7 +10,8 @@ Compact instructions to avoid common mistakes in this Astro static site.
 - **Tailwind CSS v4** via `@tailwindcss/vite` plugin.
   - **No `tailwind.config.js`**. Theme tokens live in `src/styles/global.css` using `@theme` and CSS variables.
   - Dark mode is already implemented via `prefers-color-scheme: dark` in that file.
-- **No test, lint, or typecheck scripts** exist. `npm run build` is the only verification step.
+- **Font**: Noto Sans JP (400 / 700) is loaded on every page via `BaseLayout.astro` (`<head>`).
+- **Typecheck**: `npm run typecheck` (`astro check`).
 
 ## Developer Commands
 
@@ -18,9 +19,50 @@ Compact instructions to avoid common mistakes in this Astro static site.
 | :------ | :----- |
 | `npm install` | Install dependencies |
 | `npm run dev` | Dev server at `localhost:4321` |
-| `npm run build` | Production build to `./dist/` |
+| `npm run build` | Production build to `./dist/` (runs OGP / slide PDF generation) |
 | `npm run preview` | Preview built output locally |
+| `npm run typecheck` | `astro check` — TypeScript validation |
 | `npm run deploy` | Deploy to Cloudflare Workers Static Assets |
+
+## Component Organization
+
+- `src/components/display/` — view components rendered in real pages
+  (e.g. `SummaryCard.astro`, `ContentBody.astro`, `ShareButton.astro`,
+  `PageFooter.astro`, `ScrapEntry.astro`).
+- `src/components/render/` — build-time render components (OG images, slide PDFs).
+  No shared base; each component uses its own scoped `<style>` and CSS
+  custom properties (see `Design Tokens` below).
+- `src/layouts/BaseLayout.astro` — production layout with header / footer /
+  sidebar. Used by all real pages.
+- `src/layouts/RenderLayout.astro` — minimal layout for build-time rendering
+  (OG images, slide PDFs). Provides global.css + font + slot only; no
+  chrome. Used by `src/pages/tmp/*.astro`.
+
+## Design Tokens
+
+`src/styles/global.css` の `@theme` ブロックが唯一のトークン定義源。
+
+- **Color** (semantic): `--color-bg`, `--color-surface`, `--color-header`,
+  `--color-header-fg`, `--color-text`, `--color-text-muted`, `--color-link-hover`,
+  `--color-border`, `--color-accent`, `--color-accent-light`. All derived from
+  Tailwind `sky` / `slate` scales.
+- **Page spacing**: `--spacing-section` (32px), `--spacing-content` (24px),
+  `--spacing-item` (16px), `--spacing-tight` (8px), `--spacing-xs` (4px).
+- **Prose spacing**: `--spacing-prose-block`, `--spacing-prose-heading-top`,
+  `--spacing-prose-heading-bottom`, `--spacing-prose-rule`,
+  `--spacing-prose-list-indent`.
+- **Render dimensions** (build-time only):
+  `--render-og-width` (1200px), `--render-og-height` (630px),
+  `--render-slide-width` (1920px), `--render-slide-height` (1080px),
+  `--render-slide-zoom` (3). Consumed only inside `src/components/render/`.
+
+Reusable patterns live in `@layer components` of `global.css` / `prose.css`:
+`.card`, `.interactive-card`, `.badge`, `.container-page`,
+`.text-page-title`, `.text-page-subtitle`, `.text-meta`, `.text-meta-muted`,
+`.text-faint`, `.stack-section`, `.stack-content`, `.stack-item`,
+`.stack-tight`, `.content-list`, `.page-grid`, `.page-main`, `.page-aside`.
+OG / slide render-specific classes are defined in each render component's
+scoped style and are **not** part of `@layer components`.
 
 ## Content Architecture
 

@@ -10,6 +10,7 @@
     "build": "astro build && node scripts/postbuild.mjs",
     "preview": "astro preview",
     "astro": "astro",
+    "typecheck": "astro check",
     "deploy": "npx wrangler deploy"
   },
   "dependencies": {
@@ -17,11 +18,11 @@
     "@astrojs/mdx": "^5.0.4",
     "@tailwindcss/vite": "^4.2.4",
     "astro": "^6.1.10",
-    "rehype-external-links": "^3.0.0",
-    "tailwindcss": "^4.2.4",
-    "typescript": "^5.9.3"
+    "tailwindcss": "^4.2.4"
   },
   "devDependencies": {
-    "playwright": "^1.52.0"
+    "playwright": "^1.52.0",
+    "rehype-external-links": "^3.0.0",
+    "typescript": "^5.9.3"
   }
 }

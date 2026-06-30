@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import SummaryCard from '../components/ui/SummaryCard.astro';
+import SummaryCard from '../components/display/SummaryCard.astro';
 import { getAllContents } from '../lib/contents';
 
 const latestItems = (await getAllContents()).slice(0, 5);
@@ -13,7 +13,7 @@ const latestItems = (await getAllContents()).slice(0, 5);
 >
   <div class="stack-section">
     <section class="stack-content">
-      <h1 class="text-2xl font-bold text-text">いそしぎ忘備録</h1>
+      <h1 class="text-page-title">いそしぎ忘備録</h1>
       <p class="text-text-muted leading-relaxed">
         検証結果や試行記録を整理し、小さな成果として蓄積していくアウトプット共有サイトです。
         完璧を待たず、気軽に出せる場所を目指しています。
@@ -22,7 +22,7 @@ const latestItems = (await getAllContents()).slice(0, 5);
 
     <section class="stack-content">
       <div class="flex items-center justify-between">
-        <h2 class="text-lg font-bold text-text">最新の記録</h2>
+        <h2 class="text-page-subtitle">最新の記録</h2>
         <a href="/pages" class="text-sm font-medium">すべて見る →</a>
       </div>
       {latestItems.length === 0 ? (
