@@ -16,12 +16,12 @@
   .prose li                   { @apply mb-tight; }
   .prose li > ul, .prose li > ol { @apply mb-0 mt-tight; }
   .prose code:not(pre code)   {
-    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-family: var(--font-mono);
     font-size: 0.875em;
     line-height: 1.5;
     @apply bg-accent-light font-semibold px-[0.4rem] py-[0.2rem];
   }
-  .prose pre                  { @apply bg-surface border border-border p-content overflow-x-auto mb-prose-block text-sm leading-normal; }
+  .prose pre                  { @apply bg-surface border border-border p-content overflow-x-auto mb-prose-block text-sm leading-normal; font-family: var(--font-mono); }
   .prose pre code             { @apply bg-none p-0 text-inherit font-normal; }
   .prose blockquote           { @apply border-l-4 border-l-accent pl-content my-prose-rule text-text-muted italic; }
   .prose hr                   { @apply border-0 border-t border-border my-prose-rule; }

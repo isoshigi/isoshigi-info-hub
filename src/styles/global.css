@@ -5,8 +5,9 @@
  * Design tokens (@theme) — 唯一の出所
  * ============================================================ */
 @theme {
-  /* Font stack (Noto Sans JP → system fallback) */
+  /* Font stacks */
   --font-sans: "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --font-mono: "M PLUS 1 Code", ui-monospace, SFMono-Regular, "Noto Sans Mono", "Cascadia Code", Consolas, "Liberation Mono", "Courier New", monospace;
 
   /* Semantic colors (derived from sky / slate) */
   --color-bg:           var(--color-slate-200);
