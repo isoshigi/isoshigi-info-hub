@@ -1,0 +1,221 @@
+---
+title: "今川焼、大判焼き、御座候、その他多様な名称があることで知られる食品の名称を適切に取り扱うためのgem \"imagawayaki-util\""
+description: "imagawayaki-utilライブラリの設計と実装。79の呼称データ駆動で検出・正規化・フォーマット・Lintを実現し、RuboCop統合でCIに組み込む"
+publishedAt: 2026-07-13
+tags: ["Ruby", "imagawayaki-util", "ライブラリ設計", "RuboCop", "データ駆動"]
+draft: false
+theme: "default"
+---
+
+import SlideCard from '../../components/render/SlideCard.astro';
+
+<SlideCard slideTitle={frontmatter.title}>
+
+## 今川焼、大判焼き、御座候、<br/>その他多様な名称があることで知られる食品の<br/>名称を適切に取り扱うためのgem <br/>\"imagawayaki-util\"
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+- `oobanyaki` vs `大判焼き` vs `回転焼き`
+- 地域や店舗で**79**もの呼称が混在（wiki調べ）
+- 「適切な呼び方」に統一したい
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+| 機能 | 責務 |
+|------|------|
+| **Detector** | テキストから呼称の出現位置を特定 |
+| **Normalizer** | 推奨呼称に一括置換 |
+| **Formatter** | 漢字/ひらがな/ローマ字等に変換 |
+| **Linter** | 非推奨呼称の使用を指摘 |
+
+加えて **RuboCopプラグイン**でCI統合
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+## どの呼称を「適切」とみなすかは設定可能
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+```ruby
+# プロジェクト全体の設定で変更
+Imagawayaki.configure do |config|
+  config.preferred_name = :oobanyaki
+end
+```
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+```ruby
+# 呼び出しごとに上書きも可能
+normalizer.normalize(text, preferred_key: :oobanyaki)
+linter.lint(text, preferred_key: :oobanyaki)
+```
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+## データ駆動設計
+
+心臓部は **`data/names.yml`（900行）**。79エントリをYAMLで格納
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+```yaml
+# 台湾名「車輪餅」のエントリ例
+chelunbing:
+  display_name: 車輪餅
+  script_type: kanji
+  readings:
+    hanzi: 車輪餅
+    latin: chelunbing
+  variants:
+  - チェールンビン
+  - chēlúnbǐng
+  - tshia-lian
+  aliases: []
+```
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+## なぜ~~力技~~データ駆動か
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+- 令和7年（2025年）12月告示の新しい「ローマ字のつづり方」に対応した変換ライブラリが存在しない
+- → YAMLに全パターンを列挙すれば方式の新旧・長音の有無を吸収できる
+- **総合的なかな→ローマ字変換ライブラリ**（新省令対応・長音表記バリエーション対応）の開発が急務
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+## Detector
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+全呼称の全表記から1つの巨大正規表現にコンパイル
+
+**長い文字列優先** + 重複マッチ除外
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+```ruby
+# 全呼称の全表記から正規表現を生成
+# 長い文字列を優先することで重複マッチを防ぐ
+def build_regex(forms)
+  sorted = forms.sort_by(&:length).reverse
+  escaped = sorted.map { |f| Regexp.escape(f) }
+  Regexp.new(escaped.join('|'), Regexp::IGNORECASE)
+end
+```
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+```ruby
+# テキストから呼称を検出し、位置と種類を特定
+detector = Imagawayaki.detector
+matches = detector.detect('人工衛星饅頭とベイクドモチョチョ')
+matches.map { |m| [m.matched_text, m.name.key] }
+# => [["人工衛星饅頭", :jinkoueiseimanjuu],
+#     ["ベイクドモチョチョ", :bakedmochocho]]
+```
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+## Normalizer
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+```ruby
+# 台湾名・フィクション名など、あらゆる呼称を統一
+normalizer.normalize('チェールンビンとベイクドモチョチョ')
+# => "今川焼きと今川焼き"
+normalizer.normalize('kaitenyaki wo taberu')
+# => "今川焼き wo taberu"
+```
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+## Formatter
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+```ruby
+# Nameオブジェクトを様々な表記形式に変換
+formatter.format(name, format_type: :hiragana)
+# => "べいくどもちょちょ"
+formatter.format(name, format_type: :hepburn)
+# => "beikudomochocho"
+```
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+## Linter + RuboCop
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+```ruby
+# 推奨されない呼称を検出し、修正案を返す
+linter.lint('車輪餅が食べたい')
+# => [[:chelunbing, "今川焼き"]]
+```
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+```yaml
+# config/default.yml - CIで自動チェック
+Imagawayaki/Naming:
+  Description: "今川焼き関連名称の統一（文字列リテラル・識別子）"
+  Enabled: true
+  VersionAdded: "0.1.0"
+  PreferredName: "imagawayaki"
+  PreferredRomaji: "hepburn"
+  CheckStrings: true
+  CheckIdentifiers: true
+  CheckComments: false
+```
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+## 気に入らない呼び方を駆逐しよう！
+
+</SlideCard>

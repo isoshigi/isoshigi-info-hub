@@ -1,0 +1,137 @@
+---
+title: "Ruby初学者が関西Ruby会議を振り返る"
+description: "関西RubyKaigi 09に参加。朝keynoteのHTTP進化史、夜keynoteのRuby構文解析、Ruby::Boxによるモジュラーモノリスの実行境界などセッションの感想をまとめる"
+publishedAt: 2026-07-20
+tags: ["RubyKaigi", "Ruby", "関西", "レポート", "HTTP", "Ruby::Box"]
+draft: false
+theme: "default"
+---
+
+import SlideCard from '../../components/render/SlideCard.astro';
+
+<SlideCard slideTitle={frontmatter.title}>
+
+## Ruby初学者が<br/>関西Ruby会議を振り返る
+
+Ruby会議09
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+## 今回言及するセッション
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+- 朝 keynote: 令和のnet/http
+- 夜 keynote: Rubyを余すところなく愛する人のための「オートマトンと形式言語理論」入門
+- torikago - Ruby::Boxで照らすモジュラモノリスの実行境界
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+## 朝 keynote: 令和のnet/http
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+- HTTP/1.1以降、仕様が追加され**複雑化**
+  - Queryメソッド増加とか記憶に新しい
+- 高速化・多重化・高度なDNS etc
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+- プロトコル増えすぎ → 選択自体がタスクに
+- → **Happy Eyeballs** で制御 ＜誰？
+- HTTP/1.1時代: 同接制限回避で画像を一枚に
+- → **テクスチャアトラス**の概念はWebにもあったのか
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+## 夜 keynote: Rubyを余すところなく<br/>愛する人のための<br/>「オートマトンと形式言語理論」入門
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+```ruby
+[1, 3, 4, 5].size - 1 # ok
+[1, 3, 4, 5].size -1 # ng
+```
+
+これに引っかかる人が要るのはなぜ？って話
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+> 「Rubyの設計がそれほどsimpleではなくreasonしづらいことを以て、Rubyの設計のことをwrongやbadであると断じる人」がいる
+
+心当たりある
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+- 正規表現 `かた*` → `かたたたき`なら3マッチ
+- 言われてみれば確かに
+- コードエディタはコレをイイカンジに纏めてるそう
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+パーサーの構文曖昧性の話は勉強になる。
+
+ちゃんと曖昧性を排斥して構文解析のforkを排除しようとする以外にも、parlの作者いわく空気を読んでもいいというのは面白かった
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+このセッションに関して、私は真に驚くべきパーサーに関する理解を得たが、このLTはそれを話すには短すぎる。
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+## torikago - Ruby::Boxで照らす<br/>モジュラモノリスの実行境界
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+- **モジュラーモノリス**
+- 同一VM上で実行境界がモジュールで分かれない
+  - メタプロ可能なRubyでは**実行時境界**が特に大事なんじゃないかな
+- → Ruby::Boxで解決（VM起動速度は下がるがしゃあない）
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+## 感想
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+- **非Web系多くないか？**
+- マイコン、Z80ゲーム機、チャリ、占い…
+- PicoRubyの話とか確かに多く聞くけど、どうなってるんだ
+
+</SlideCard>
+
+<SlideCard slideTitle={frontmatter.title}>
+
+## 楽しかった
+
+</SlideCard>
