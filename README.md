@@ -8,7 +8,7 @@
 - **フレームワーク**: Astro
 - **コンテンツフォーマット**: MDX
 - **スタイリング**: Tailwind CSS
-- **ホスティング・CDN**: Cloudflare R2 + CDN
+- **ホスティング・CDN**: Cloudflare Workers Static Assets
 - **アクセス解析**: Cloudflare Web Analytics
 
 ## ディレクトリ構成
@@ -22,10 +22,15 @@
 │   └── postbuild.mjs        # ビルド時OGP画像生成・スライドPDF出力スクリプト
 ├── src/
 │   ├── components/          # Astroコンポーネント
-│   │   ├── OGImageCard.astro
-│   │   ├── ScrapEntry.astro
-│   │   ├── ShareButton.astro
-│   │   └── SummaryCard.astro
+│   │   ├── display/         # ページ表示用コンポーネント
+│   │   │   ├── ContentBody.astro
+│   │   │   ├── PageFooter.astro
+│   │   │   ├── ScrapEntry.astro
+│   │   │   ├── ShareButton.astro
+│   │   │   └── SummaryCard.astro
+│   │   └── render/          # ビルド時描画用コンポーネント（OG画像 / スライドPDF）
+│   │       ├── OGImageCard.astro
+│   │       └── SlideCard.astro
 │   ├── content/             # コンテンツデータ
 │   │   ├── articles/        # 技術記事（*.mdx）
 │   │   ├── scraps/          # 調べ物（*.mdx）
@@ -33,6 +38,13 @@
 │   │   └── stories/         # ストーリー（*.mdx）
 │   ├── layouts/
 │   │   └── BaseLayout.astro
+│   ├── lib/                 # ユーティリティ
+│   │   ├── contents.ts
+│   │   ├── draftFilter.ts
+│   │   ├── formatDate.ts
+│   │   ├── storyFlow.ts
+│   │   ├── typeLabels.ts
+│   │   └── types.ts
 │   ├── pages/               # ページルーティング
 │   │   ├── index.astro
 │   │   ├── pages/index.astro
@@ -40,9 +52,12 @@
 │   │   ├── scraps/[slug].astro
 │   │   ├── slides/[slug].astro
 │   │   ├── stories/[slug].astro
-│   │   └── tmp/og.astro     # OGP画像生成用（ビルド後に削除）
+│   │   └── tmp/             # ビルド時のみ使用（生成後に削除）
+│   │       ├── og.astro     # OGP画像生成用
+│   │       └── slides/[slug].astro  # スライドPDF生成用
 │   ├── styles/
-│   │   └── global.css
+│   │   ├── global.css
+│   │   └── prose.css
 │   └── content.config.ts    # コンテンツスキーマ定義
 ├── templates/               # コンテンツテンプレート
 │   ├── article.mdx
@@ -56,7 +71,8 @@
 │   ├── style-guide.md
 │   └── user-story-mapping.md
 ├── astro.config.mjs
-└── mise.toml
+├── mise.toml
+└── wrangler.toml
 ```
 
 ## 使い方
@@ -133,10 +149,10 @@ cp templates/scrap.mdx src/content/scraps/my-scrap.mdx
 
 ### 初回のみ
 
-1. [Cloudflare ダッシュボード](https://dash.cloudflare.com/) で R2 バケットを作成する。
-2. Cloudflare Pages または Workers + R2 でホスティングを設定する。
+1. [Cloudflare ダッシュボード](https://dash.cloudflare.com/) で API トークンを発行する。
+2. `wrangler.toml` の設定を確認する。
 
-### 毎回
+### 手動デプロイ
 
 1. ビルドする。
 
@@ -144,21 +160,21 @@ cp templates/scrap.mdx src/content/scraps/my-scrap.mdx
 npm run build
 ```
 
-2. `./dist/` の内容を R2 バケット（または Pages のプロジェクト）にアップロードする。
+2. Cloudflare Workers Static Assets にデプロイする。
 
 ```sh
-# wrangler を使う場合の例
-wrangler pages deploy dist
+npx wrangler deploy
 ```
 
-または、R2 に直接アップロードする場合:
+または:
 
 ```sh
-wrangler r2 object put <bucket-name>/index.html --file dist/index.html
-# 他のファイルも同様
+npm run deploy
 ```
 
-デプロイ自動化は v0.2 以降で検討する。v0.1 では手動デプロイを許容する。
+### 自動デプロイ
+
+`main` ブランチへの push をトリガーに、GitHub Actions（`.github/workflows/deploy.yml`）が自動的にビルド・デプロイを行う。バージョン番号は `test/v*` または `feat/v*` ブランチからの PR マージ時に自動で minor バージョンアップされる。
 
 ## Analytics
 
@@ -172,3 +188,5 @@ wrangler r2 object put <bucket-name>/index.html --file dist/index.html
 | `npm run dev`   | 開発サーバーを起動する（localhost:4321）     |
 | `npm run build` | 本番用にビルドする（./dist/ に出力）         |
 | `npm run preview` | ビルド結果をローカルでプレビューする        |
+| `npm run typecheck` | `astro check` で型チェックする           |
+| `npm run deploy` | Cloudflare Workers Static Assets にデプロイする |

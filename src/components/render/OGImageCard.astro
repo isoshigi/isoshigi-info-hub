@@ -16,12 +16,14 @@ const { type, title, description, publishedAt, updatedAt, tags } = Astro.props;
 ---
 
 <div
-  class="og-card flex flex-col justify-between bg-surface text-text w-300 h-157.5 p-12 border-l-16 border-l-accent box-border font-['Noto_Sans_JP',sans-serif]"
+  class="w-[var(--render-og-width)] h-[var(--render-og-height)] p-12
+         bg-surface text-text border-l-4 border-l-accent
+         flex flex-col justify-between"
 >
-  <div>
-    <div class="flex items-center gap-4 mb-8">
+  <div class="flex flex-col gap-section">
+    <div class="flex items-center gap-item">
       {type && (
-        <span class="badge text-xl px-4 py-1 text-accent rounded">
+        <span class="badge text-xl py-tight px-content text-accent rounded">
           {typeLabels[type]}
         </span>
       )}
@@ -33,31 +35,18 @@ const { type, title, description, publishedAt, updatedAt, tags } = Astro.props;
       </time>
     </div>
 
-    <h1
-      class="font-bold text-text leading-tight mb-6 text-[56px] max-h-40 line-clamp-2"
-    >
-      {title}
-    </h1>
-
-    <p
-      class="text-text-muted leading-relaxed text-[28px] max-h-30 line-clamp-3"
-    >
-      {description}
-    </p>
+    <h1 class="text-5xl font-bold leading-tight text-text line-clamp-2">{title}</h1>
+    <p class="text-2xl leading-normal text-text-muted line-clamp-3">{description}</p>
   </div>
 
-  <div class="flex items-end justify-between mt-6">
+  <div class="flex items-end justify-between gap-item mt-section">
     {tags && tags.length > 0 && (
-      <div class="flex flex-wrap gap-3">
+      <div class="flex flex-wrap gap-item">
         {tags.map((tag) => (
-          <span class="badge px-4 py-1.5 text-lg font-medium">
-            {tag}
-          </span>
+          <span class="badge text-lg font-medium py-[6px] px-item">{tag}</span>
         ))}
       </div>
     )}
-    <div class="text-xl font-bold text-text-muted ml-auto shrink-0">
-      isoshigi.dev
-    </div>
+    <div class="text-xl font-bold text-text-muted ml-auto shrink-0">isoshigi.dev</div>
   </div>
 </div>
